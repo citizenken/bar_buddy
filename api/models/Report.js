@@ -11,19 +11,13 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     line        : { type: 'boolean', required: true, defaultsTo: true },
-    count       : { type: 'int', required: true, defaultsTo: 0},
-    composition : { type: 'int', required: true, defaultsTo: 3}
+    count       : { type: 'integer', required: true, defaultsTo: 0},
+    composition : { type: 'integer', required: true, defaultsTo: 3}
   },
 
-  beforeValidation: function(values, next) {
-    console.log(values)
-    if (typeof values.reporter !== 'number') {
-        Reporter.findOrCreate({name: values.reporter}).exec(function(data){
-            console.log(data)
-            values.reporter = data.id;
-        })
-    };
-    next();
-  },
+  // beforeValidation: function(values, next) {
+  //   console.log(values)
+  //   next();
+  // },
 };
 

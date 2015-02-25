@@ -24,18 +24,16 @@ $(function() {
     })
 
 // Collection
-    var Reports = Backbone.Collection.extend({
+    var ReportList = Backbone.Collection.extend({
         url: '/report',
         model: Report
     })
-
-    var reports = new Reports;
 
 // Views
     var ReportView = Backbone.View.extend({
         tagName: 'li',
 
-        template: _.template($('#report-template').html()),
+        template: Handlebars.template($('#report-template').html()),
 
         render: function () {
             console.log(this.model.toJSON())
@@ -47,15 +45,14 @@ $(function() {
     var ReportListView = Backbone.View.extend({
         el: '#report_list',
 
-        initialize: function () {
-            _.bindAll(this, "render");
-            reports.on('sync', this.render);
-            reports.fetch();
+        initialize:function () {
+            _.bindAll(this, 'render');
+            this.model.on('reset', this.render, this);
         },
 
         render: function () {
-            var self = this;
-            console.log(this)
+            var self = this,
+                reports = this.model;
 
             _.each(reports.models, function(report) {
                 var reportModel = new ReportView({model: report})
@@ -66,9 +63,32 @@ $(function() {
         }
     })
 
+    var AppRouter = Backbone.Router.extend({
+
+        routes:{
+            '':'dashboard'
+            // 'wines/:id':'wineDetails'
+        },
+
+        dashboard: function () {
+            this.reportList = new ReportList();
+            this.reportListView = new ReportListView({model:this.reportList});
+            this.reportList.fetch({reset: true});
+            $('#report_list_container').html(this.reportListView.render().el);
+        },
+
+        // wineDetails:function (id) {
+        //     this.wine = this.wineList.get(id);
+        //     this.wineView = new WineView({model:this.wine});
+        //     $('#content').html(this.wineView.render().el);
+        // }
+    });
+
+    var app = new AppRouter();
+    Backbone.history.start();
 
 
-    var App = new ReportListView
+    // var App = new ReportListView
 
 
 
