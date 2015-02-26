@@ -1,8 +1,13 @@
+<style>
+  #report_entry_container {
+    
+  }
+</style>
 <h1>Welcome</h1>
 <div id="dashboard">
     <a id="dashboard_link" href="#" style="display:none;">Dashboard</a>
     <a id="create_report" href="#report_entry">Create Report</a>
-
+    <div id="report_entry_anchor"></div>
     <div id="report_list_container">
       <select id="sort_prop">
         <option value="createdAt">Age</option>
@@ -29,8 +34,16 @@
 <script type="text/x-handlebars-template" id="report_entry_template" >
     <div id="report_entry_container">
       <form id="report_entry">
-        <input id="reporter" type="number" placeholder="Reporter Name"/>
-        <input id="location" type="number" placeholder="Location"/>
+        <select id="reporter">
+        <% _.each(reporters, function(model) { %>
+          <option value="<%= model.id %>"><%= model.name %></option>
+        <% }); %>
+        </select>
+        <select id="location">
+        <% _.each(locations, function(model) { %>
+          <option value="<%= model.id %>"><%= model.name %></option>
+        <% }); %>
+        </select>
         <input id="count" type="number" placeholder="Number of People" />
         <input id="line" type="checkbox">In line?</input>
         <input id="submit_report" type="button" value="Submit Report"/>
