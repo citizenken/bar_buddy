@@ -1,11 +1,30 @@
 define([
   'handlebars',
   'jquery',
+  'jqueryui',
   'underscore',
-  'backbone'
-], function (Handlebars, $, _, Backbone){
+  'backbone',
+  'bbmodal',
+  'bootstrap'
+], function (Handlebars, $, ui, _, Backbone){
 
-// $(function () {
+function setCookie(c_name,value,exdays) {
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie = c_name+"="+c_value+"; path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
 
 // Model
     var Report = Backbone.Model.extend({
@@ -95,9 +114,37 @@ define([
     })
 
     var ReportEntryView = Backbone.View.extend({
-        el: '#report_entry_anchor',
+        // el: '#report_entry_anchor',
         events: {
           'click #submit_report'   : 'submitReport',
+        },
+
+        sliders: ['count', 'comp'],
+
+        defaultSliderVal: 3,
+
+        defaultSliderOptions: {
+          value:3,
+          min: 1,
+          max: 5,
+          step: 1
+        },
+
+        sliderLabels: {
+          count: {
+            1: "Don't bother",
+            2: "Not great",
+            3: "Average",
+            4: "Looking good",
+            5: "Get here NOW"
+          },
+          comp: {
+            1: "Sausage fest",
+            2: "More guys",
+            3: "A good mix",
+            4: "More girls",
+            5: "Clambake"
+          },
         },
 
         template: _.template($('#report_entry_template').html()),
@@ -108,22 +155,49 @@ define([
             this.reporters = new ReporterList()
             $.when(this.locations.fetch({reset: true}),
                    this.reporters.fetch({reset: true}))
-            .then(this.render);
-
-
+            .then();
         },
 
         render: function () {
+            var self = this;
             this.$el.append(this.template({locations: this.locations.toJSON(), reporters: this.reporters.toJSON()}));
+
+            var previousReporter = getCookie('bb_reporter')
+            if (previousReporter) {
+              $('#reporter').val(previousReporter)
+            }
+
             return this;
         },
 
-      remove: function() {
-         this.$el.children('#report_entry_container').remove()
-      },
-      
-        submitReport: function (event) {
-          event.stopPropagation();
+        renderSliders: function (sliders) {
+          var self = this;
+
+          _.each(sliders, function(slider){
+            var sliderEl = $('#' + slider + '-slider'),
+                sliderValueEl = $('#' + slider),
+                sliderLabelEl = $('#' + slider + '-label'),
+                opts = self.defaultSliderOptions
+
+            opts.slide = function(event, ui) {
+              sliderValueEl.val(ui.value);
+              sliderLabelEl.text(self.sliderLabels[slider][ui.value]);
+            }
+
+            sliderEl.slider(opts);
+            sliderValueEl.val(self.defaultSliderVal)
+            sliderLabelEl.text(self.sliderLabels[slider][sliderValueEl.val()])
+          })
+
+          return
+
+        },
+
+        remove: function() {
+           this.$el.children('#report_entry_container').remove()
+        },
+
+        submitReport: function () {
           var self = this;
               form = $('#report_entry'),
               url = document.domain + ':' + location.port,
@@ -134,10 +208,10 @@ define([
           formData.count = parseInt(form.children('#count').val());
           formData.line = ((form.children('#line').prop('checked')) ? true : false);
 
+          setCookie('bb_reporter', formData.reporter, 30)
 
           $.post('/report', formData, function(response) {
             window.location = '/#';
-            self.remove();
           });
 
           return false;
@@ -151,6 +225,11 @@ define([
         orderBy: 'createdAt',
         orderDir: 'desc',
 
+        events: {
+          'change #sort_prop'   : 'changeOrder',
+          'change #sort_dir'   : 'changeOrder',
+        },
+
         initialize:function () {
             _.bindAll(this, 'render');
             this.reportListElement = this.$el.children('#report_list');
@@ -159,11 +238,6 @@ define([
               this.reportListElement.empty();
               this.render();
             }, this);
-        },
-
-        events: {
-          'change #sort_prop'   : 'changeOrder',
-          'change #sort_dir'   : 'changeOrder',
         },
 
         render: function () {
@@ -202,11 +276,11 @@ define([
             if (this.reportEntryView) {
               this.reportEntryView.remove();
             }
-          
+
             if (this.reportListView) {
-              this.reportListView.reportListElement.empty()              
+              this.reportListView.reportListElement.empty()
             }
-          
+
             this.reportList = new ReportList();
             this.reportListView = new ReportListView({collection:this.reportList});
             this.reportList.fetch({reset: true})
@@ -237,10 +311,15 @@ define([
 
         createReport: function() {
             this.reportEntryView = new ReportEntryView();
+            new Backbone.BootstrapModal({
+              content: this.reportEntryView,
+              okText: 'Submit Report',
+              closeCB: function() {window.location = '/#';}
+            }).open(this.reportEntryView.submitReport);
+            this.reportEntryView.renderSliders(this.reportEntryView.sliders)
             $('#dashboard_link').show();
             $('#create_report').hide();
 
-//             $('#dashboard').append(this.reportEntryView.render().el);
         }
     });
 

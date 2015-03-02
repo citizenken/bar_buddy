@@ -1,6 +1,6 @@
 <style>
   #report_entry_container {
-    
+
   }
 </style>
 <h1>Welcome</h1>
@@ -34,6 +34,7 @@
 <script type="text/x-handlebars-template" id="report_entry_template" >
     <div id="report_entry_container">
       <form id="report_entry">
+        <input type="text" id="reporter" placeholder="Reporter name"></input>
         <select id="reporter">
         <% _.each(reporters, function(model) { %>
           <option value="<%= model.id %>"><%= model.name %></option>
@@ -44,7 +45,16 @@
           <option value="<%= model.id %>"><%= model.name %></option>
         <% }); %>
         </select>
-        <input id="count" type="number" placeholder="Number of People" />
+        <div id="count-slider-container">
+          <input id="count" type="hidden"/>
+          <div id="count-slider"></div>
+          <p id="count-label"></p>
+        </div>
+        <div id="comp-slider-container">
+          <input id="comp" type="hidden"/>
+          <div id="comp-slider"></div>
+          <p id="comp-label"></p>
+        </div>
         <input id="line" type="checkbox">In line?</input>
         <input id="submit_report" type="button" value="Submit Report"/>
       </form>

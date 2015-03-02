@@ -1,0 +1,11 @@
+        <input type="text" id="reporter" placeholder="Reporter name"></input>
+        <select id="reporter">
+        <% _.each(reporters, function(model) { %>
+          <option value="<%= model.id %>"><%= model.name %></option>
+        <% }); %>
+        </select>
+        <select id="location">
+        <% _.each(locations, function(model) { %>
+          <option value="<%= model.id %>"><%= model.name %></option>
+        <% }); %>
+        </select>
