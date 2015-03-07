@@ -4,26 +4,27 @@ define([
   'jqueryui',
   'underscore',
   'backbone',
-  'bbmodal',
+  // 'bbmodal',
+  'bmodal',
   'bootstrap'
 ], function (Handlebars, $, ui, _, Backbone){
 
 function setCookie(c_name,value,exdays) {
   var exdate=new Date();
   exdate.setDate(exdate.getDate() + exdays);
-  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-  document.cookie = c_name+"="+c_value+"; path=/";
+  var c_value=escape(value) + ((exdays==null) ? '' : '; expires='+exdate.toUTCString());
+  document.cookie = c_name+'='+c_value+'; path=/';
 }
 
 function getCookie(cname) {
-    var name = cname + "=";
+    var name = cname + '=';
     var ca = document.cookie.split(';');
     for(var i=0; i<ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0)==' ') c = c.substring(1);
         if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
     }
-    return "";
+    return '';
 }
 
 // Model
@@ -113,11 +114,16 @@ function getCookie(cname) {
         }
     })
 
-    var ReportEntryView = Backbone.View.extend({
+    var ReportEntryView = Backbone.Modal.extend({
         // el: '#report_entry_anchor',
         events: {
           'click #submit_report'   : 'submitReport',
         },
+
+        submitEl: '#submit_report',
+        cancelEl: '#cancel_entry',
+
+        onDestroy: function () {window.location = '/#'},
 
         sliders: ['count', 'comp'],
 
@@ -132,43 +138,22 @@ function getCookie(cname) {
 
         sliderLabels: {
           count: {
-            1: "Don't bother",
-            2: "Not great",
-            3: "Average",
-            4: "Looking good",
-            5: "Get here NOW"
+            1: 'Don\'t bother',
+            2: 'Not great',
+            3: 'Average',
+            4: 'Looking good',
+            5: 'Get here NOW'
           },
           comp: {
-            1: "Sausage fest",
-            2: "More guys",
-            3: "A good mix",
-            4: "More girls",
-            5: "Clambake"
+            1: 'Sausage fest',
+            2: 'More guys',
+            3: 'A good mix',
+            4: 'More girls',
+            5: 'Clambake'
           },
         },
 
         template: _.template($('#report_entry_template').html()),
-
-        initialize: function () {
-            _.bindAll(this, 'render', 'submitReport');
-            this.locations = new LocationList()
-            this.reporters = new ReporterList()
-            $.when(this.locations.fetch({reset: true}),
-                   this.reporters.fetch({reset: true}))
-            .then();
-        },
-
-        render: function () {
-            var self = this;
-            this.$el.append(this.template({locations: this.locations.toJSON(), reporters: this.reporters.toJSON()}));
-
-            var previousReporter = getCookie('bb_reporter')
-            if (previousReporter) {
-              $('#reporter').val(previousReporter)
-            }
-
-            return this;
-        },
 
         renderSliders: function (sliders) {
           var self = this;
@@ -197,18 +182,27 @@ function getCookie(cname) {
            this.$el.children('#report_entry_container').remove()
         },
 
-        submitReport: function () {
+        submit: function () {
           var self = this;
               form = $('#report_entry'),
               url = document.domain + ':' + location.port,
-              formData = {};
+              formData = {count:{}, location:{}, composition:{}};
 
-          formData.reporter = parseInt(form.children('#reporter').val());
-          formData.location = parseInt(form.children('#location').val());
-          formData.count = parseInt(form.children('#count').val());
+          formData.reporter = form.children('#reporter').val();
+          formData.location.name = form.children('#location').val();
+          formData.location.address = form.children('#address').val();
+
+          formData.count.value = parseInt(form.children('#count-slider-container').children('#count').val());
+          formData.count.label = form.children('#count-slider-container').children('#count-label').text();
+
+          formData.composition.value = parseInt(form.children('#count-slider-container').children('#comp').val());
+          formData.composition.label = form.children('#count-slider-container').children('#comp-label').text();
+
           formData.line = ((form.children('#line').prop('checked')) ? true : false);
 
           setCookie('bb_reporter', formData.reporter, 30)
+
+          console.log(formData)
 
           $.post('/report', formData, function(response) {
             window.location = '/#';
@@ -311,11 +305,8 @@ function getCookie(cname) {
 
         createReport: function() {
             this.reportEntryView = new ReportEntryView();
-            new Backbone.BootstrapModal({
-              content: this.reportEntryView,
-              okText: 'Submit Report',
-              closeCB: function() {window.location = '/#';}
-            }).open(this.reportEntryView.submitReport);
+
+            $('#dashboard').append(this.reportEntryView.render().el)
             this.reportEntryView.renderSliders(this.reportEntryView.sliders)
             $('#dashboard_link').show();
             $('#create_report').hide();

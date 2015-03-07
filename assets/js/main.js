@@ -9,7 +9,8 @@ require.config({
     jqueryui: '//code.jquery.com/ui/1.11.3/jquery-ui.min',
     underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min',
     backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min',
-    bbmodal: 'backbone.bootstrap-modal',
+    // bbmodal: 'backbone.bootstrap-modal',
+    bmodal: './dependencies/backbone.modal',
     bootstrap: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min'
   },
 

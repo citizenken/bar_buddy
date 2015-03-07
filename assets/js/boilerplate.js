@@ -4,7 +4,8 @@ define([
   'jqueryui',
   'underscore',
   'backbone',
-  'bbmodal',
+  // 'bbmodal',
+  'bmodal',
   'bootstrap'
 ], function (Handlebars, $, ui, _, Backbone){
   // Above we have passed in jQuery, Underscore and Backbone
