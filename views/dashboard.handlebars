@@ -1,0 +1,8 @@
+<h1>Welcome</h1>
+<div id="dashboard" ng-controller="DashboardCtrl">
+  <ul>
+    <li ng-repeat="report in reports">
+      {{ report.reporter }} says this about {{ report.location }}: {{ report.count.label }} {{ report.composition.label }}
+    </li>
+  </ul>
+</div>
