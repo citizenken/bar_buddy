@@ -33,8 +33,13 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
+<<<<<<< Updated upstream
     view: 'homepage'
   }
+=======
+    view: 'dashboard'
+  },
+>>>>>>> Stashed changes
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +50,7 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+  'post /report': 'Report.create'
 
 };
