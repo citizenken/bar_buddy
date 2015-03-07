@@ -1,60 +1,8 @@
-<style>
-  #report_entry_container {
-
-  }
-</style>
 <h1>Welcome</h1>
-<div id="dashboard">
-    <a id="dashboard_link" href="#" style="display:none;">Dashboard</a>
-    <a id="create_report" href="#report_entry">Create Report</a>
-    <div id="report_entry_anchor"></div>
-    <div id="report_list_container">
-      <select id="sort_prop">
-        <option value="createdAt">Age</option>
-        <option value="reporter_name">Reporter</option>
-        <option value="location_name">Location</option>
-        <option value="id">Id</option>
-        <option value="count">Count</option>
-      </select>
-      <select id="sort_dir">
-        <option value="desc">Descending</option>
-        <option value="asc">Ascending</option>
-      </select>
-      <ul id="report_list">
-      </ul>
-    </div>
+<div id="dashboard" ng-controller="DashboardCtrl">
+  <ul>
+    <li ng-repeat="report in reports">
+      {{ report.reporter }} says this about {{ report.location }}: {{ report.count.label }} {{ report.composition.label }}
+    </li>
+  </ul>
 </div>
-
-
-<script type="text/x-handlebars-template" id="report_template" >
-    <li>
-      <a href="#reporter/<%= reporter_id %>"><%= reporter_name %></a> says <a href="#location/<%= location_id %>"><%= location_name %></a> has <%= count %> people <% if (line) { %> in line <% } else { %> inside <% } %></li>
-</script>
-
-<script type="text/x-handlebars-template" id="report_entry_template" >
-    <div id="report_entry_container" class="bbm-modal">
-      <div class="bbm-modal__topbar">
-        <h3 class="bbm-modal__title">Report Entry</h3>
-      </div>
-      <div id="report_entry" class="bb-modal__section">
-        <input type="text" id="reporter" placeholder="Reporter name"></input>
-        <input type="text" id="location" placeholder="Location name"></input>
-        <input type="text" id="address" placeholder="Location address"></input>
-        <div id="count-slider-container">
-          <input id="count" type="hidden"/>
-          <div id="count-slider"></div>
-          <p id="count-label"></p>
-        </div>
-        <div id="comp-slider-container">
-          <input id="comp" type="hidden"/>
-          <div id="comp-slider"></div>
-          <p id="comp-label"></p>
-        </div>
-        <input id="line" type="checkbox">In line?</input>
-        <div class="bbm-modal__bottombar">
-          <input id="cancel_entry" type="button" value="Cancel"/>
-          <input id="submit_report" type="button" value="Submit Report"/>
-        </div>
-      </div>
-   </div>
-</script>
