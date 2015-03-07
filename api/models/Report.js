@@ -15,9 +15,5 @@ module.exports = {
     composition : { type: 'integer', required: true, defaultsTo: 3}
   },
 
-  // beforeValidation: function(values, next) {
-  //   console.log(values)
-  //   next();
-  // },
 };
 

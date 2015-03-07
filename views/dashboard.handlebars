@@ -32,19 +32,14 @@
 </script>
 
 <script type="text/x-handlebars-template" id="report_entry_template" >
-    <div id="report_entry_container">
-      <form id="report_entry">
+    <div id="report_entry_container" class="bbm-modal">
+      <div class="bbm-modal__topbar">
+        <h3 class="bbm-modal__title">Report Entry</h3>
+      </div>
+      <div id="report_entry" class="bb-modal__section">
         <input type="text" id="reporter" placeholder="Reporter name"></input>
-        <select id="reporter">
-        <% _.each(reporters, function(model) { %>
-          <option value="<%= model.id %>"><%= model.name %></option>
-        <% }); %>
-        </select>
-        <select id="location">
-        <% _.each(locations, function(model) { %>
-          <option value="<%= model.id %>"><%= model.name %></option>
-        <% }); %>
-        </select>
+        <input type="text" id="location" placeholder="Location name"></input>
+        <input type="text" id="address" placeholder="Location address"></input>
         <div id="count-slider-container">
           <input id="count" type="hidden"/>
           <div id="count-slider"></div>
@@ -56,7 +51,10 @@
           <p id="comp-label"></p>
         </div>
         <input id="line" type="checkbox">In line?</input>
-        <input id="submit_report" type="button" value="Submit Report"/>
-      </form>
+        <div class="bbm-modal__bottombar">
+          <input id="cancel_entry" type="button" value="Cancel"/>
+          <input id="submit_report" type="button" value="Submit Report"/>
+        </div>
+      </div>
    </div>
 </script>
