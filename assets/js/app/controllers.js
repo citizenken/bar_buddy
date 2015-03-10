@@ -1,42 +1,25 @@
 var barBuddyApp = angular.module('barBuddyApp', []);
 
-barBuddyApp.controller('DashboardCtrl', function ($scope) {
-    $scope.reporter = [{
-        "location":
-            {
-            "name" : "Bill's",
-            "address": "1637 Commonwealth ave. Boston, MA 02135"
-            },
-        "reporter":"nel",
-        "count":
-            {
-                "value": 3,
-                "label": "average"
-            },
-        "composition":
-            {
-                "value": 3,
-                "label": "A good mix"
-            },
-        "line":false
-        }, {
-        "location":
-            {
-            "name" : "Bill's",
-            "address": "1637 Commonwealth ave. Boston, MA 02135"
-            },
-        "reporter":"nel",
-        "count":
-            {
-                "value": 3,
-                "label": "average"
-            },
-        "composition":
-            {
-                "value": 3,
-                "label": "A good mix"
-            },
-        "line":false
-        }
-    ]
-})
+barBuddyApp.controller('DashboardCtrl', ['$scope', '$http', function ($scope, $http) {
+    $scope.baseUrl = '';
+    // socket = io.socket;
+
+    // $scope.reports = [];
+
+    $scope.getAllchat = function(){
+      io.socket.get('/report', function (data) {
+        console.log(data)
+        $scope.reports = data;
+        $scope.$apply();
+      })
+    };
+
+    $scope.getAllchat();
+
+    io.socket.on('report', function(obj){
+      $scope.reports += obj.data;
+      $scope.$apply();
+    })
+
+
+}])

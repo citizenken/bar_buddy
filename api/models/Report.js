@@ -11,8 +11,8 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     line        : { type: 'boolean', required: true, defaultsTo: true },
-    count       : { type: 'integer', required: true, defaultsTo: 0},
-    composition : { type: 'integer', required: true, defaultsTo: 3}
+    count       : { model: 'count', required: true},
+    composition : { model: 'composition', required: true}
   },
 
 };

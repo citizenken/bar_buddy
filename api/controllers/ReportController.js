@@ -7,6 +7,7 @@
 
 module.exports = {
     create: function (req, res) {
+
         var body = req.body;
 
         if (!body.reporter) {
@@ -52,7 +53,8 @@ module.exports = {
                 Report.create(body)
                 .exec(function (err, report) {
                   if (err) return next(err)
-                  res.json(report)
+                    Report.publishCreate(report)
+                    res.json(report)
                 });
               });
             });
