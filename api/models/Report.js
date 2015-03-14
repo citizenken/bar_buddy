@@ -15,5 +15,18 @@ module.exports = {
     composition : { model: 'composition', required: true}
   },
 
+  publishCreate: function (values, req) {
+    var watchers = this.watchers();
+
+    sails.sockets.emit(watchers, 'report', {
+        verb: 'created',
+        data: values,
+        id: values[this.primaryKey]
+    });
+
+    // Subscribe all watchers to the new instance, if you're into that
+    this.introduce(values[this.primaryKey]);
+  }
+
 };
 
