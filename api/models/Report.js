@@ -18,7 +18,7 @@ module.exports = {
   publishCreate: function (values, req) {
     var watchers = this.watchers();
 
-    sails.sockets.emit(watchers, 'report', {
+    sails.sockets.emit(watchers[0].id, 'report', {
         verb: 'created',
         data: values,
         id: values[this.primaryKey]
