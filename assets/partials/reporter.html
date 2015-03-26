@@ -1,8 +1,8 @@
 <div id="reporter">
-  <h1>{{ report.reporter.name}}</h1>
-  <a href="#">Back to dashboard</a>
+  <h1>{{ reporterReports[0].reporter.name}}</h1>
+  <a href="#/">Back to dashboard</a>
   <ul>
-    <li ng-repeat="report in reports | orderBy:'createdAt':true">
+    <li ng-repeat="report in reporterReports | orderBy:'createdAt':true">
       {{ report.reporter.name }} is at <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>: {{ report.count.label }} {{ report.composition.label }}
   </ul>
 </div>

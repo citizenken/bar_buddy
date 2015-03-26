@@ -1,45 +1,87 @@
-barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($scope, reportSocket) {
-    $scope.baseUrl = '';
+barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', 'Report', function ($scope, reportSocket, Report) {
+    socketInfo = {
+      url: '/report/nearby',
+      socketEvent: 'newReport'
+    }
 
-    // $scope.getAllchat = function(){
-    //   io.socket.get('/report', function (data) {
-    //     $scope.reports = data;
-    //     $scope.$apply();
-    //   })
-    // };
+    maxReports = 25;
+    allDashboardReports = []
+    $scope.reportLocationOptions = { types: 'establishment', country: 'us' }
 
-    // $scope.getAllchat();
+    $scope.dashboardReports = []
 
-    reportSocket.getAllReports($scope)
+    reportSocket.getReports(socketInfo, $scope)
 
-    $scope.$on('allReports', function (event, data) {
-      $scope.reports = data
-      $scope.$apply();
-    })
-    // console.log($scope.reports)
-    // $scope.$apply();
-    // io.socket.on('report', function(obj){
-    //   $scope.reports.push(obj.data);
-    //   $scope.$apply();
-    // })
+    $scope.$on(socketInfo.socketEvent, function (event, data) {
+      if (data.length) {
+        allDashboardReports = allDashboardReports.concat(data);
+      } else {
+        allDashboardReports.push(data)
+      }
 
-}])
+      $scope.dashboardReports = allDashboardReports.slice(0, maxReports)
 
-barBuddyApp.controller('ReporterDetailCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
-    io.socket.get('/reporter/' + $routeParams.reporterId, function (data) {
-
-        $scope.reports = expandedreports;
-        $scope.$apply();
-    })
-
-    io.socket.on('reporter/' + $routeParams.reporterId, function(obj){
-      $scope.reports.push(obj.data);
       $scope.$apply();
     })
 
+    $scope.createLocationObj = function (newReport, reportLocationDetails) {
+      newReport.location = {}
+      newReport.location.address = reportLocationDetails.formatted_address
+      newReport.location.name = reportLocationDetails.name
+      newReport.location.lat = reportLocationDetails.geometry.location.k
+      newReport.location.lon = reportLocationDetails.geometry.location.D
+
+      $scope.sendReport(newReport)
+    }
+
+    $scope.sendReport = function (newReport) {
+      Report.save(newReport, function () {
+        delete $scope.newReport
+        delete $scope.reportLocationDetails
+      })
+    }
+
+
 }])
 
-barBuddyApp.controller('LocationDetailCtrl', ['$scope', '$routeParams', function ($scope, $routeParams) {
+barBuddyApp.controller('ReporterDetailCtrl', ['$scope', '$stateParams', 'reportSocket', function ($scope, $stateParams, reportSocket) {
+    reporterId = $stateParams.reporterId
+    socketInfo = {
+      url: '/reporter/' + reporterId + '/reports',
+      socketEvent: 'newReporterReport'
+    }
 
+    reportSocket.getReports(socketInfo, $scope)
+
+    $scope.reporterReports = []
+    $scope.$on(socketInfo.socketEvent, function (event, data) {
+      if (data.length) {
+        $scope.reporterReports = $scope.reporterReports.concat(data);
+      } else {
+        $scope.reporterReports.push(data)
+      }
+      $scope.$apply();
+    })
+
+}])
+
+barBuddyApp.controller('LocationDetailCtrl', ['$scope', '$stateParams', 'reportSocket', function ($scope, $stateParams, reportSocket) {
+    locationId = $stateParams.locationId
+    socketInfo = {
+      url: '/location/' + locationId + '/reports',
+      socketEvent: 'newLocationReport'
+    }
+
+    reportSocket.getReports(socketInfo, $scope)
+
+    $scope.locationReports = []
+    $scope.$on(socketInfo.socketEvent, function (event, data) {
+      if (data.length) {
+        $scope.locationReports = $scope.locationReports.concat(data);
+      } else {
+        $scope.locationReports.push(data)
+      }
+      $scope.$apply();
+    })
 
 }])

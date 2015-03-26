@@ -1,8 +1,0 @@
-<div id="dashboard">
-  <h1>Welcome</h1>
-  <ul>
-    <li ng-repeat="report in reports | orderBy:'createdAt':true">
-      <a href="#/reporter/{{ report.reporter.id }}">{{ report.reporter.name }}</a> is at
-      <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>: {{ report.count.label }} {{ report.composition.label }}
-  </ul>
-</div>

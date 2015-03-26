@@ -15,17 +15,33 @@ module.exports = {
     composition : { model: 'composition', required: true}
   },
 
-  publishCreate: function (values, req) {
+  publishCreate: function (req, report) {
     var watchers = this.watchers();
 
-    sails.sockets.emit(watchers[0].id, 'report', {
+    sails.sockets.broadcast('sails_model_create_report', 'newReport', {
         verb: 'created',
-        data: values,
-        id: values[this.primaryKey]
+        data: report,
+        id: report[this.primaryKey]
+    });
+
+    var reportId = report.reporter.id
+    room = Reporter.room(reportId, 'newReporterReport')
+    sails.sockets.broadcast(room, 'newReporterReport', {
+        verb: 'created',
+        data: report,
+        id: report[this.primaryKey]
+    });
+
+    var reportId = report.location.id
+    room = Reporter.room(reportId, 'newLocationReport')
+    sails.sockets.broadcast(room, 'newLocationReport', {
+        verb: 'created',
+        data: report,
+        id: report[this.primaryKey]
     });
 
     // Subscribe all watchers to the new instance, if you're into that
-    this.introduce(values[this.primaryKey]);
+    this.introduce(report[this.primaryKey]);
   }
 
 };
