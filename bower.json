@@ -1,0 +1,17 @@
+{
+  "name": "bar_buddy",
+  "version": "0.0.0",
+  "homepage": "https://github.com/citizenken/bar_buddy_sails",
+  "authors": [
+    "Ken Petti <kennethpetti@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
