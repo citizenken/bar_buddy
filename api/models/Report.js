@@ -11,9 +11,38 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     line        : { type: 'boolean', required: true, defaultsTo: true },
-    count       : { type: 'integer', required: true, defaultsTo: 0},
-    composition : { type: 'integer', required: true, defaultsTo: 3}
+    count       : { model: 'count', required: true},
+    composition : { model: 'composition', required: true}
   },
+
+  publishCreate: function (req, report) {
+    var watchers = this.watchers();
+
+    sails.sockets.broadcast('sails_model_create_report', 'newReport', {
+        verb: 'created',
+        data: report,
+        id: report[this.primaryKey]
+    });
+
+    var reportId = report.reporter.id
+    room = Reporter.room(reportId, 'newReporterReport')
+    sails.sockets.broadcast(room, 'newReporterReport', {
+        verb: 'created',
+        data: report,
+        id: report[this.primaryKey]
+    });
+
+    var reportId = report.location.id
+    room = Reporter.room(reportId, 'newLocationReport')
+    sails.sockets.broadcast(room, 'newLocationReport', {
+        verb: 'created',
+        data: report,
+        id: report[this.primaryKey]
+    });
+
+    // Subscribe all watchers to the new instance, if you're into that
+    this.introduce(report[this.primaryKey]);
+  }
 
 };
 
