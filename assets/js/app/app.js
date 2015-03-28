@@ -41,7 +41,7 @@ barBuddyApp.directive('reportForm', function() {
 
 
 barBuddyApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    // $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/');
 
     $stateProvider
         .state('dashboard', {
