@@ -32,9 +32,15 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+<<<<<<< HEAD
   '/': {
     view: 'dashboard'
   },
+=======
+  // '/': {
+  //   view: 'dashboard'
+  // },
+>>>>>>> angular_version
 
   /***************************************************************************
   *                                                                          *
@@ -46,6 +52,13 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+<<<<<<< HEAD
   'post /report': 'Report.create'
+=======
+  'get /report/nearby': 'Report.nearby',
+  'post /report': 'Report.create',
+  'get /reporter/:id/reports': 'Reporter.reports',
+  'get /location/:id/reports': 'Location.reports'
+>>>>>>> angular_version
 
 };
