@@ -1,0 +1,15 @@
+<div id="dashboard" style="width:250px;">
+  <h1>Welcome</h1>
+    <div ng-include="'/partials/report_form.html'"></div>
+    <div class="list-group" ng-repeat="report in dashboardReports | orderBy:'createdAt':true">
+      <!-- <a href="#" class="list-group-item active"> -->
+        <h4 class="list-group-item-heading">
+            <a ui-sref="reporter({ reporterId: report.reporter.id })">{{ report.reporter.name }}</a>
+            <span ng-if="report.line == true">is in line at</span>
+            <span ng-if="report.line == false">is at</span>
+            <a ui-sref="location({ locationId: report.location.id })">{{ report.location.name }}</a>:
+        </h4>
+        <p class="list-group-item-text">{{ report.count.label }} {{ report.composition.label }}</p>
+      <!-- </a> -->
+    </div>
+</div>
