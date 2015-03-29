@@ -19,9 +19,11 @@
 
   <body>
     <snap-drawer>
-      <reportForm>
+      <div ng-include="'/partials/report_form.html'" ng-controller="ReportFormCtrl"></div>
     </snap-drawer>
-    <div class="container" ui-view></div>
+    <snap-content style="background-color:white">
+      <div class="container" ui-view></div>
+    </snap-content>
 
   </body>
 </html>

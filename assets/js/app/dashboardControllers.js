@@ -1,6 +1,6 @@
-barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', 'Report', function ($scope, reportSocket, Report) {
+barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($scope, reportSocket) {
     socketInfo = {
-      url: '/report/nearby',
+      url: '/report',
       socketEvent: 'newReport'
     }
 
@@ -23,23 +23,4 @@ barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', 'Report', fun
 
       $scope.$apply();
     })
-
-    $scope.createLocationObj = function (newReport, reportLocationDetails) {
-      newReport.location = {}
-      newReport.location.address = reportLocationDetails.formatted_address
-      newReport.location.name = reportLocationDetails.name
-      newReport.location.lat = reportLocationDetails.geometry.location.k
-      newReport.location.lon = reportLocationDetails.geometry.location.D
-
-      $scope.sendReport(newReport)
-    }
-
-    $scope.sendReport = function (newReport) {
-      Report.save(newReport, function () {
-        delete $scope.newReport
-        delete $scope.reportLocationDetails
-      })
-    }
-
-
 }])

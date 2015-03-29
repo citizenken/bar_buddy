@@ -1,5 +1,6 @@
 <div id="reporter">
   <h1>{{ reporterReports[0].reporter.name}}</h1>
+  <button snap-toggle="left">Create Report</button>
   <a href="#/">Back to dashboard</a>
   <ul>
     <li ng-repeat="report in reporterReports | orderBy:'createdAt':true">

@@ -1,5 +1,6 @@
 <div id="location">
   <h1>{{ locationReports[0].location.name}}</h1>
+  <button snap-toggle="left">Create Report</button>
   <a href="#/">Back to dashboard</a>
   <ul>
     <li ng-repeat="report in locationReports | orderBy:'createdAt':true">
