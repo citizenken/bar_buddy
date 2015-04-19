@@ -1,8 +1,10 @@
 var barBuddyApp = angular.module('barBuddyApp', [
-	'ui.router',
-  'ngResource',
-  'ngAutocomplete',
-  'snap'
+    // 'ui.router',
+    'ngRoute',
+    'ngResource',
+    'ngAutocomplete',
+    'snap',
+    'infinite-scroll'
   	]);
 
 

@@ -1,19 +1,22 @@
-barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', function ($scope, Report) {
-    $scope.createLocationObj = function (newReport, reportLocationDetails) {
-      newReport.location = {}
-      newReport.location.address = reportLocationDetails.formatted_address
-      newReport.location.name = reportLocationDetails.name
-      newReport.location.lat = reportLocationDetails.geometry.location.k
-      newReport.location.lon = reportLocationDetails.geometry.location.D
+barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', function ($scope, Report, snapRemote) {
+    $scope.newReport = {}
 
-      $scope.sendReport(newReport)
+    $scope.createLocationObj = function (newReport, reportLocationDetails) {
+      $scope.newReport.location = {}
+      $scope.newReport.location.address = reportLocationDetails.formatted_address
+      $scope.newReport.location.name = reportLocationDetails.name
+      $scope.newReport.location.lat = reportLocationDetails.geometry.location.k
+      $scope.newReport.location.lon = reportLocationDetails.geometry.location.D
+
+      $scope.sendReport()
     }
 
-    $scope.sendReport = function (newReport) {
-      Report.save(newReport, function () {
+    $scope.sendReport = function () {
+      Report.save($scope.newReport, function () {
         snapRemote.toggle('left')
-        delete $scope.newReport
-        delete $scope.reportLocationDetails
+        $scope.newReport = null
+        reportLocation = null
+        reportLocationDetails = null
       })
     }
 }])

@@ -1,26 +1,31 @@
 barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($scope, reportSocket) {
+    $scope.$on('$viewContentLoaded', function(event) {window.alert('loaded')})
+
+
     socketInfo = {
       url: '/report',
       socketEvent: 'newReport'
     }
 
-    maxReports = 25;
-    allDashboardReports = []
     $scope.reportLocationOptions = { types: 'establishment', country: 'us' }
-
     $scope.dashboardReports = []
+    $scope.page = 0
 
-    reportSocket.getReports(socketInfo, $scope)
+    $scope.nextPage = function() {
+      $scope.page += 1
+      reportSocket.getReports(socketInfo, $scope.page, $scope)
+    }
+
+    reportSocket.getReports(socketInfo, $scope.page, $scope)
 
     $scope.$on(socketInfo.socketEvent, function (event, data) {
-      if (data.length) {
-        allDashboardReports = allDashboardReports.concat(data);
-      } else {
-        allDashboardReports.push(data)
+      if (angular.isArray(data) && data.length > 0 || data.id) {
+        if (data.length) {
+          $scope.dashboardReports = $scope.dashboardReports.concat(data);
+        } else {
+          $scope.dashboardReports.push(data)
+        }
+        $scope.$apply();
       }
-
-      $scope.dashboardReports = allDashboardReports.slice(0, maxReports)
-
-      $scope.$apply();
     })
 }])
