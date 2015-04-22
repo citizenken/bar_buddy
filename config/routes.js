@@ -35,6 +35,10 @@ module.exports.routes = {
   'get /report/nearby': 'Report.nearby',
   'post /report': 'Report.create',
   'get /reporter/:id/reports': 'Reporter.reports',
-  'get /location/:id/reports': 'Location.reports'
+  'get /location/:id/reports': 'Location.reports',
+  'get /logout': 'AuthController.logout',
+
+  'post /auth/:provider': 'AuthController.callback',
+  'post /auth/:provider/:action': 'AuthController.callback'
 
 };

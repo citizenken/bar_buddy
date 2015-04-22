@@ -1,7 +1,4 @@
 barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($scope, reportSocket) {
-    $scope.$on('$viewContentLoaded', function(event) {window.alert('loaded')})
-
-
     socketInfo = {
       url: '/report',
       socketEvent: 'newReport'

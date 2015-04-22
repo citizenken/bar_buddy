@@ -33,8 +33,6 @@ module.exports = {
         geocoder = require('node-geocoder').getGeocoder(geoSettings.geocoderProvider,
         geoSettings.httpAdapter, geoSettings.extra);
 
-      console.log(sails.sockets.socketRooms(req.socket))
-
       // geocoder.geocode(req.ip, function(err, res) {
       //   var city = res.city,
       //       zip = res.zipcode,

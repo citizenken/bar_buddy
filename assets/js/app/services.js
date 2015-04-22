@@ -27,3 +27,38 @@ barBuddyApp.service('reportSocket', ['appConfig', function (appConfig) {
     scope.$emit(socketInfo.socketEvent, response)
   };
 }]);
+
+
+barBuddyApp.service('authService', ['$cookies', '$http', '$q', function ($cookies, $http, $q) {
+  this.isAuthenticated = function () {
+    return $cookies.authenticated
+  }
+
+  this.login = function (credentials) {
+    var deferred = $q.defer();
+
+    $http.post('/auth/local', credentials)
+    .then(function (result) {
+      $cookies.authenticated = true
+    }, function (error) {
+      deferred.reject(error);
+    });
+
+    return deferred.promise
+  },
+
+  this.register = function (credentials) {
+    var deferred = $q.defer();
+
+    $http.post('/auth/local/register', credentials)
+    .then(function (result) {
+      $cookies.authenticated = true
+    }, function (error) {
+      deferred.reject(error);
+    });
+
+    return deferred.promise
+  }
+
+
+}])
