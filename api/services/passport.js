@@ -238,6 +238,7 @@ passport.callback = function (req, res, next) {
       this.protocols.local.disconnect(req, res, next);
     }
     else {
+      console.log(action, req.user)
       next(new Error('Invalid action'));
     }
   } else {

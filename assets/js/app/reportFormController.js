@@ -1,12 +1,35 @@
-barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', function ($scope, Report, snapRemote) {
-    $scope.newReport = {}
+barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'cookieHandler', function ($scope, Report, snapRemote, cookieHandler) {
+    $scope.reportLocationOptions = { types: 'establishment', country: 'us' }
+    $scope.cleanReportLocationDetails = {}
+    $scope.cleanReportLocation = ''
+    $scope.cleanReport = {
+      count: {
+        value: '',
+        label:''
+      },
+      composition: {
+        value: '',
+        label: ''
+      },
+      line: ''
+    }
 
-    $scope.createLocationObj = function (newReport, reportLocationDetails) {
-      $scope.newReport.location = {}
-      $scope.newReport.location.address = reportLocationDetails.formatted_address
-      $scope.newReport.location.name = reportLocationDetails.name
-      $scope.newReport.location.lat = reportLocationDetails.geometry.location.k
-      $scope.newReport.location.lon = reportLocationDetails.geometry.location.D
+    $scope.cleanReportForm = function () {
+      $scope.newReport = angular.copy($scope.cleanReport)
+      $scope.reportForm.$setPristine()
+      $scope.reportLocation = angular.copy($scope.cleanReportLocation)
+      $scope.reportLocationDetails = angular.copy($scope.cleanReportLocationDetails)
+    }
+
+    $scope.createLocationObj = function () {
+      $scope.newReport.location = {
+        'address': $scope.reportLocationDetails.formatted_address,
+        'name': $scope.reportLocationDetails.name,
+        'lat': $scope.reportLocationDetails.geometry.location.k,
+        'lon': $scope.reportLocationDetails.geometry.location.D
+      }
+
+      $scope.newReport.reporter = cookieHandler.getCookie('username')
 
       $scope.sendReport()
     }
@@ -14,9 +37,7 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', func
     $scope.sendReport = function () {
       Report.save($scope.newReport, function () {
         snapRemote.toggle('left')
-        $scope.newReport = null
-        reportLocation = null
-        reportLocationDetails = null
+        $scope.cleanReportForm()
       })
     }
 }])

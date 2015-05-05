@@ -4,7 +4,6 @@ barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($sc
       socketEvent: 'newReport'
     }
 
-    $scope.reportLocationOptions = { types: 'establishment', country: 'us' }
     $scope.dashboardReports = []
     $scope.page = 0
 

@@ -1,5 +1,17 @@
 barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function ($scope, authService) {
-    $scope.register = false
+    $scope.register = false,
+
+    $scope.cleanAuthForm = {
+        identifier : '',
+        email : '',
+        password: '',
+        confirm_password: ''
+    },
+
+    $scope.cleanForm = function () {
+      $scope.auth = angular.copy($scope.cleanForm)
+      $scope.authForm.$setPristine()
+    }
 
     $scope.toggleRegister = function () {
       if ($scope.register) {
@@ -9,7 +21,7 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
       }
     }
 
-    $scope.confirmPassword - function (password, confirm) {
+    $scope.confirmPassword = function (password, confirm) {
       if (password !== confirm) {
         $scope.invalid = false
       }
@@ -17,22 +29,27 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
 
 
     $scope.isAuthenticated = function() {
-      return authService.isAuthenticated()
+      if (authService.getAuthToken()) {
+        $scope.cleanForm()
+        return true
+      } else {
+        return false
+      }
     }
 
-    $scope.handleAuth = function (authInfo) {
-      if (authInfo.email) {
-        authInfo = {
-          email: authInfo.email,
-          username: authInfo.identifier,
-          password: authInfo.password
+    $scope.handleAuth = function () {
+      if ($scope.auth.email) {
+        $scope.auth = {
+          email: $scope.auth.email,
+          username: $scope.auth.identifier,
+          password: $scope.auth.password
         }
       }
 
       if ($scope.register) {
-        authService.register(authInfo)
+        authService.register($scope.auth)
       } else {
-        authService.login(authInfo)
+        authService.login($scope.auth)
       }
 
       $scope.isAuthenticated()

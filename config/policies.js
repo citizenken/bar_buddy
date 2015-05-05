@@ -54,7 +54,7 @@ module.exports.policies = {
   // }
 
   ReportController: {
-    create: ['bearerAuth'],
+    create: ['bearerAuth'],// 'reissueBearer'],
     destroy: ['bearerAuth', 'isAdmin']
   }
 };

@@ -168,7 +168,7 @@ exports.login = function (req, identifier, password, next) {
           if (err) {
             return next(err);
           }
-
+          console.log('in passport find. this is the res', res)
           if (!res) {
             req.flash('error', 'Error.Passport.Password.Wrong');
             return next(null, false);

@@ -1,5 +1,5 @@
-barBuddyApp.factory('Report', ['$resource', function($resource) {
-  return $resource('/report/:id')
+barBuddyApp.factory('Report', ['$resource', 'authService', function($resource, authService) {
+    return $resource('/report/:id', {verb:'', access_token: authService.getAuthToken()}, {post: {method: 'POST', headers: {'foo': 'bar'}}});
 }]);
 
 barBuddyApp.factory('appConfig', [function() {

@@ -144,7 +144,7 @@ var AuthController = {
       response = {'form': req.body}
 
       if (err) {
-        response['full_error'] = err
+        response['full_error'] = JSON.stringify(err)
       }
 
       if (challenges) {
@@ -158,6 +158,7 @@ var AuthController = {
       res.json('400', response)
     }
     passport.callback(req, res, function (err, user, challenges, statuses) {
+      console.log(err, user, challenges)
       if (err || !user) {
         return tryAgain(err, challenges);
       }
@@ -170,10 +171,9 @@ var AuthController = {
         // Mark the session as authenticated to work with default Sails sessionAuth.js policy
         req.session.authenticated = true
 
-        Passport.findById(user.id).exec(function (err, passport) {
+        Passport.findOne({user: user.id}).exec(function (err, passport) {
           if (err) { return res.send(err); }
-          console.log(passport[0])
-          res.set('Authentication', passport[0].accessToken)
+          res.set('Authentication', passport.accessToken)
 
           // Upon successful login, send the user to the homepage were req.user
           // will be available.

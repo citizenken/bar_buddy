@@ -1,22 +1,24 @@
-<form name="authForm">
-    <h1>Login</h1>
-    <label for="username">Username:</label></br>
-    <input id="username" type="text" ng-model="auth.identifier"/></br>
-    <label for="email" ng-show="register">Email:</label></br>
-    <input id="email" type="email" ng-show="register" ng-model="auth.email"/></br>
-    <label for="password">Password:</label></br>
-    <input id="password" type="password" ng-model="auth.password"/></br>
-    <div class="form-group" bs-has-error>
-        <label for="confirm_password" class="form-label" ng-show="register">Confirm Password:</label>
-        <input id="confirm_password" name="confirm_password" type="password"
-            ng-show="register"
-            class="form-control"
-            pattern="auth.password"
-            ng-model="auth.confirm_password"/>
-    </div>
-    <a id="register_link" href="" ng-click="toggleRegister()">
-    {{register ? "Click here to login" : "Click here to register"}}</a></br>
-    <input type="button" ng-click="handleAuth(auth)" value="Submit" />
-    <!-- <tt>authForm.confirm_password.$invalid = {{authForm.confirm_password.$invalid}}</tt><br/> -->
-    <!-- <tt>authForm.confirm_password.$error = {{authForm.confirm_password.$error}}</tt><br/> -->
-</form>
+<div ng-controller="AuthenticationCtrl">
+    <form name="authForm">
+        <h1>Login</h1>
+        <label for="username">Username:</label></br>
+        <input id="username" type="text" ng-model="auth.identifier"/></br>
+        <label for="email" ng-show="register">Email:</label></br>
+        <input id="email" type="email" ng-show="register" ng-model="auth.email"/></br>
+        <label for="password">Password:</label></br>
+        <input id="password" type="password" ng-model="auth.password"/></br>
+        <div class="form-group" bs-has-error>
+            <label for="confirm_password" class="form-label" ng-show="register">Confirm Password:</label>
+            <input id="confirm_password" name="confirm_password" type="password"
+                ng-show="register"
+                class="form-control"
+                pattern="auth.password"
+                ng-model="auth.confirm_password"/>
+        </div>
+        <a id="register_link" href="" ng-click="toggleRegister()">
+        {{register ? "Click here to login" : "Click here to register"}}</a></br>
+        <input type="button" ng-click="handleAuth()" value="Submit" />
+        <!-- <tt>authForm.confirm_password.$invalid = {{authForm.confirm_password.$invalid}}</tt><br/> -->
+        <!-- <tt>authForm.confirm_password.$error = {{authForm.confirm_password.$error}}</tt><br/> -->
+    </form>
+</div>
