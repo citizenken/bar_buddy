@@ -19,7 +19,7 @@ barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($sc
         if (data.length) {
           $scope.dashboardReports = $scope.dashboardReports.concat(data);
         } else {
-          $scope.dashboardReports.push(data)
+          $scope.dashboardReports.unshift(data)
         }
         $scope.$apply();
       }
