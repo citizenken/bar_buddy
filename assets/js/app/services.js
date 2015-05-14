@@ -19,6 +19,7 @@ barBuddyApp.service('reportSocket', ['appConfig', function (appConfig) {
     });
 
     io.socket.on(socketEvent, function (response) {
+      console.log(response.data)
       self.updateReports(socketInfo, scope, response.data)
     });
   };
