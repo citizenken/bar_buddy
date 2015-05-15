@@ -7,9 +7,8 @@
           <h4 class="list-group-item-heading">
               <h3>{{ report.id }} {{ report.createdAt }}</h3>
               <a ui-sref="reporter({ reporterId: report.reporter.id })">{{ report.reporter.name }}</a>
-              <span ng-if="report.line == true">is in line at</span>
-              <span ng-if="report.line == false">is at</span>
               <a ui-sref="location({ locationId: report.location.id })">{{ report.location.name }}</a>:
+              <span>{{ report.content }}</span>
           </h4>
           <p class="list-group-item-text">{{ report.count.label }} {{ report.composition.label }}</p>
         <!-- </a> -->

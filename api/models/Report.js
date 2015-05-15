@@ -10,9 +10,7 @@ module.exports = {
   attributes: {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
-    line        : { type: 'boolean', required: true, defaultsTo: true },
-    count       : { model: 'count', required: true},
-    composition : { model: 'composition', required: true}
+    content        : { type: 'text', required: true},
   },
 
   publishCreate: function (req, report) {

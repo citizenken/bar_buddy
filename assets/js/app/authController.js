@@ -30,7 +30,6 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
 
     $scope.isAuthenticated = function() {
       if (authService.getAuthToken()) {
-        $scope.cleanForm()
         return true
       } else {
         return false

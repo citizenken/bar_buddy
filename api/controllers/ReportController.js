@@ -58,17 +58,7 @@ module.exports = {
           return res.json(409, {error: 'Location parameter is required'});
         }
 
-        if (!body.count) {
-          return res.json(409, {error: 'Count parameter is required'});
-        }
-
-        if (!body.composition) {
-          return res.json(409, {error: 'Composition parameter is required'});
-        }
-
         var locationData = body.location,
-            countData = body.count,
-            compositionData = body.composition,
             associations = {};
 
         Reporter.findOrCreate({name: body.reporter}, {name: body.reporter})
@@ -79,38 +69,19 @@ module.exports = {
 
           Location.findOrCreate({name: locationData.name}, locationData)
           .exec(function(err, location) {
-            // if (err) return next(err)
             if (err) return res.json(500, {error: err})
             body.location = location.id;
             associations.location = location;
-
-            Count.findOrCreate({label: countData.label}, countData)
-            .exec(function(err, count) {
-              if (err) return res.json(500, {error: err})
-              body.count = count.id;
-              associations.count = count;
-
-              Composition.findOrCreate({label: compositionData.label}, compositionData)
-              .exec(function(err, composition) {
+              Report.create(body)
+              .exec(function (err, report) {
                 if (err) return res.json(500, {error: err})
-                body.composition = composition.id;
-                associations.composition = composition;
+                  var reportWithAssociations = report;
+                  reportWithAssociations.reporter = associations.reporter;
+                  reportWithAssociations.location = associations.location;
 
-                Report.create(body)
-                .exec(function (err, report) {
-                  if (err) return res.json(500, {error: err})
-                    var reportWithAssociations = report;
-                    reportWithAssociations.reporter = associations.reporter;
-                    reportWithAssociations.location = associations.location;
-                    reportWithAssociations.count = associations.count;
-                    reportWithAssociations.composition = associations.composition;
-
-                    Report.publishCreate(req, reportWithAssociations)
-                    // Report.publishCreate(report)
-                    res.json(reportWithAssociations)
-                });
+                  Report.publishCreate(req, reportWithAssociations)
+                  res.json(reportWithAssociations)
               });
-            });
           });
         });
     }

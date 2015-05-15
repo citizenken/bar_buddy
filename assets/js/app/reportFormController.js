@@ -3,15 +3,7 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'coo
     $scope.cleanReportLocationDetails = {}
     $scope.cleanReportLocation = ''
     $scope.cleanReport = {
-      count: {
-        value: '',
-        label:''
-      },
-      composition: {
-        value: '',
-        label: ''
-      },
-      line: ''
+      count: ''
     }
 
     $scope.cleanReportForm = function () {

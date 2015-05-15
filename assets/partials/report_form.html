@@ -3,11 +3,8 @@
 	    <h1>Create a New Report</h1>
 	    <label for="location">Location</label>
 	    <input type="text" id="location" class="form-control" ng-autocomplete ng-model="reportLocation" details="reportLocationDetails" options="reportLocationOptions"/></br>
-	    Count: <input type="number" ng-model="newReport.count.value"/></br>
-	    Count_label: <input type="text" ng-model="newReport.count.label"/></br>
-	    Composition: <input type="number" ng-model="newReport.composition.value"/></br>
-	    Composition_label: <input type="text" ng-model="newReport.composition.label"/></br>
-	    Line: <input type="checkbox" ng-model="newReport.line"/></br>
+	    <label for="content">Content:</label>
+        <textarea id="content" ng-model="newReport.content"/></br>
 	    <input type="button" ng-click="createLocationObj()" value="Submit" />
 	</form>
 </div>
