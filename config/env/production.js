@@ -46,7 +46,7 @@ module.exports = {
   session: {
     adapter: 'redis',
     host: process.env.REDIS_IP,
-    port: procsss.env.REDIS_PORT,
+    port: process.env.REDIS_PORT,
     // ttl: <redis session TTL in seconds>,
     // db: 0,
     // pass: <redis auth password>
