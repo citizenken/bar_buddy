@@ -31,7 +31,6 @@
   },
   "resolutions": {
     "angular": ">=1.2.0",
-    "lodash": "~2.4.1",
-    "angular-google-maps": "~2.0.19"
+    "lodash": "~2.4.1"
   }
 }
