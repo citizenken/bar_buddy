@@ -30,7 +30,6 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
 
     $scope.isAuthenticated = function() {
       if (authService.getAuthToken()) {
-        $scope.cleanForm()
         return true
       } else {
         return false
@@ -52,6 +51,8 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
         authService.login($scope.auth)
       }
 
-      $scope.isAuthenticated()
+      if ($scope.isAuthenticated()) {
+        $scope.cleanForm()
+      }
     }
 }])
