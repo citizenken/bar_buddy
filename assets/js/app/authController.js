@@ -51,6 +51,8 @@ barBuddyApp.controller('AuthenticationCtrl', ['$scope', 'authService', function 
         authService.login($scope.auth)
       }
 
-      $scope.isAuthenticated()
+      if ($scope.isAuthenticated()) {
+        $scope.cleanForm()
+      }
     }
 }])
