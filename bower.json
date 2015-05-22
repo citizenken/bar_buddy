@@ -28,9 +28,5 @@
     "lodash": "~3.9.0",
     "angular-bootstrap-validation": "~0.0.5",
     "angular-google-maps": "~2.1.1"
-  },
-  "resolutions": {
-    "angular": ">=1.2.0",
-    "lodash": "~2.4.1"
   }
 }
