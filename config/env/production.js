@@ -12,27 +12,45 @@
 
 module.exports = {
 
+  hookTimeout: 30000,
+
   /***************************************************************************
    * Set the default database connection for models in the production        *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
 
-  // models: {
-  //   connection: 'someMysqlServer'
-  // },
+  models: {
+    connection: 'mysqlServer',
+    migrate: 'safe'
+  },
 
   /***************************************************************************
    * Set the port in the production environment to 80                        *
    ***************************************************************************/
 
-  // port: 80,
+  port: process.env.PORT || 1337
 
   /***************************************************************************
    * Set the log level in production environment to "silent"                 *
    ***************************************************************************/
 
-  // log: {
-  //   level: "silent"
-  // }
+  log: {
+    level: process.env.LOG_LEVEL
+  }
+
+
+  /***************************************************************************
+   * Redis settings                                                          *
+   ***************************************************************************/
+
+  session: {
+    adapter: 'redis',
+    host: process.env.REDIS_IP,
+    port: procsss.env.REDIS_PORT,
+    // ttl: <redis session TTL in seconds>,
+    // db: 0,
+    // pass: <redis auth password>
+    prefix: 'sess:'
+  }
 
 };
