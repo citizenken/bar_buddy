@@ -22,14 +22,14 @@
     <snap-drawer>
       <div ng-controller="AuthenticationCtrl">
         <div ng-if="isAuthenticated()">
-          <div ng-include="'partials/report_form.html'"></div>
+          <div ng-include="'/partials/report_form.html'"></div>
         </div>
         <div ng-if="!isAuthenticated()">
-          <div ng-include="'partials/auth_form.html'"></div>
+          <div ng-include="'/partials/auth_form.html'"></div>
         </div>
       </div>
     </snap-drawer>
-    <snap-content style="background-color:white">
+    <snap-content style="background-color:white" snap-opt-dragger='null'>
       <div class="container" ng-view></div>
     </snap-content>
 

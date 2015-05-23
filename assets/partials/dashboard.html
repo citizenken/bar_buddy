@@ -1,16 +1,16 @@
-<div id="dashboard" style="width:250px;">
+<div id="dashboard" style="width:500px;">
   <h1>Welcome</h1>
     <button snap-toggle="left">Create Report</button>
     <div id="report_container" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false">
       <div class="list-group" ng-repeat="report in dashboardReports">
         <!-- <a href="#" class="list-group-item active"> -->
-          <h4 class="list-group-item-heading">
-              <h3>{{ report.id }} {{ report.createdAt }}</h3>
-              <a ui-sref="reporter({ reporterId: report.reporter.id })">{{ report.reporter.name }}</a>
-              <a ui-sref="location({ locationId: report.location.id })">{{ report.location.name }}</a>:
-              <span>{{ report.content }}</span>
-          </h4>
-          <p class="list-group-item-text">{{ report.count.label }} {{ report.composition.label }}</p>
+          <h3 class="list-group-item-heading">
+              <a href="#/reporter/{{ report.reporter.id }}">{{ report.reporter.name }}</a>
+              <span>@</span>
+              <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>
+              <h5>{{ report.createdAt | date:'medium' }}</h5>
+          </h3>
+          <p class="list-group-item-text">{{ report.content }}</p>
         <!-- </a> -->
       </div>
     </div>
