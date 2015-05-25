@@ -61,7 +61,7 @@ def generate_reports():
 
   total_reports = sys.argv[1]
   iterator = 0
-  url = "http://black-wave-71-193261.use1.nitrousbox.com:1337/report"
+  url = "http://localhost:1337/report"
 
   while (iterator < int(total_reports)):
     r = copy.deepcopy(report)

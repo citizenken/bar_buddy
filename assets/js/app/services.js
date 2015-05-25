@@ -1,6 +1,5 @@
 barBuddyApp.service('reportSocket', ['appConfig', function (appConfig) {
   this.getReports = function (socketInfo, page, scope) {
-
     if (!socketInfo.queryParms) {
       var queryParms = {
           sort: 'createdAt DESC',
