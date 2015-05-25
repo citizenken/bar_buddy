@@ -6,5 +6,7 @@ var barBuddyApp = angular.module('barBuddyApp', [
     'snap',
     'infinite-scroll',
     'ngCookies',
-    'bs-validation'
+    'bs-validation',
+    'uiGmapgoogle-maps',
+    'geolocation'
   	]);
