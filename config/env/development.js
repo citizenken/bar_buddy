@@ -18,7 +18,7 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'mysqlServer_dev',
+    connection: 'mysqlServerDev',
     migrate: 'alter'
   }
 
