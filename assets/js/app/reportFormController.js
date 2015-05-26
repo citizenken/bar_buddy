@@ -15,10 +15,11 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'coo
 
     $scope.createLocationObj = function () {
       $scope.newReport.location = {
-        'address': $scope.reportLocationDetails.formatted_address,
-        'name': $scope.reportLocationDetails.name,
-        'lat': $scope.reportLocationDetails.geometry.location.k,
-        'lon': $scope.reportLocationDetails.geometry.location.D
+        address: $scope.reportLocationDetails.formatted_address,
+        name: $scope.reportLocationDetails.name,
+        lat: $scope.reportLocationDetails.geometry.location.k,
+        lon: $scope.reportLocationDetails.geometry.location.D,
+        placeId: $scope.reportLocationDetails.id
       }
 
       $scope.newReport.reporter = cookieHandler.getCookie('username')
