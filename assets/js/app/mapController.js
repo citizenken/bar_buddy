@@ -6,6 +6,7 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
 
     $scope.hiddenMap = {"opacity":"0"};
     $scope.mapMarkers = []
+    $scope.mapWindows = []
 
     $scope.map = {
       center: {
@@ -15,9 +16,7 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
       zoom: 15
     }
 
-    // $scope.loadMarkers = function () {
-    //   reportSocket
-    // }
+    $scope.mapAllowed = true;
 
     geolocation.getLocation().then(function(data){
       $scope.map.center = {
@@ -25,27 +24,46 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
         longitude:data.coords.longitude
       };
       uiGmapIsReady.promise(1).then(function(instances) {
+        $scope.hideMapMsg = true;
         $scope.hiddenMap = {"opacity":"1"};
       });
+
+    }, function (data) {
+      $scope.mapAllowed = false;
+      console.log('fail')
+      console.log($scope.mapAllowed)
     });
 
     reportSocket.getReports(socketInfo, $scope.page, $scope)
 
     $scope.$on(socketInfo.socketEvent, function (event, data) {
       if (angular.isArray(data) && data.length > 0 || data.id) {
+        if (!angular.isArray(data)) {
+          data = [data];
+        }
         console.log(data)
-        for (var i = data.length - 1; i >= 0; i--) {
-          var report = data[i]
-          // console.log(report)
+        angular.forEach(data, function(report) {
           markerInfo = {
             id: report.id,
             location: report.location.name,
             latitude: report.location.lat,
-            longitude: report.location.lon
+            longitude: report.location.lon,
+            options:{
+              place: {
+                location: {
+                  lat: report.location.lat,
+                  lng: report.location.lon
+                },
+                placeId: report.location.placeId
+              }
+            }
           }
           $scope.mapMarkers.unshift(markerInfo)
-        };
-        console.log($scope.mapMarkers)
+        }, this);
+        $scope.map.center = {
+          latitude: $scope.mapMarkers[0].latitude,
+          longitude: $scope.mapMarkers[0].longitude
+        }
       }
     })
 }])
