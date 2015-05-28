@@ -1,0 +1,96 @@
+#!/bin/bash
+main () {
+    schema="${1}"
+    mode="update"
+    env="${NODE_ENV}"
+    host="${DB_HOST}"
+    name="${DB_NAME}"
+    pass="${DB_PASS}"
+    db_user="${DB_USER}"
+
+    while getopts ":c:" opt; do
+      case $opt in
+        c)
+          mode="create"
+          schema="${OPTARG}"
+
+          ;;
+        \?)
+          echo "Invalid option: -$OPTARG" >&2
+          ;;
+      esac
+    done
+
+    check_variables
+
+    case "$mode" in
+        create )
+            create_schema
+            ;;
+        update )
+            update_schema
+            ;;
+    esac
+
+}
+
+check_variables () {
+    if [[ -z "${host}" ]]; then
+        host="localhost"
+    fi
+
+    if [[ -z "${name}" ]]; then
+        name="bar_buddy"
+    fi
+
+    if [[ -z "${pass}" ]]; then
+        read -sp "Set password:" pass
+    fi
+
+    if [[ -z "${db_user}" ]]; then
+        db_user="root"
+    fi
+
+    if [[ "${env}" == "production" ]]; then
+        read -p "Env is currently production. OK to update schema?(y/n):" UPDATE
+        if [[ "${UPDATE}" == "n" ]]; then
+            exit
+        fi
+    fi
+}
+
+create_schema () {
+    mkdir -p schemas
+    mysqldump -u "${db_user}" --password="${pass}" -h "${host}" "${name}" --no-data \
+    > schemas/$(date +%s)_"${schema}".sql
+}
+
+update_schema () {
+    if [[ -z "${schema}" ]]; then
+        for i in $(find ./schemas -type f -name "*.sql"); do
+            if [[ -n "${i}" ]]; then
+                schema="${i}"
+                execute_update
+            fi
+        done
+    else
+        execute_update
+    fi
+}
+
+execute_update () {
+    set -x
+    schema_name="${schema##*[a-z]*/}"
+    schema_name="${schema_name%%.*}"
+
+    queries="CREATE TABLE IF NOT EXISTS current_schema (schema_name VARCHAR(50) NOT NULL, executed TIMESTAMP);"
+    queries+="INSERT INTO current_schema (schema_name) VALUES('${schema_name}');"
+    echo "${queries}"
+    mysql -u "${db_user}" --password="${pass}" -h "${host}" -D "${name}" -e "${queries}"
+    mysql -u "${db_user}" --password="${pass}" -h "${host}" -D "${name}" < "${schema}"
+
+    mv "${schema}" "${schema}.executed"
+}
+
+
+main "${@}"
