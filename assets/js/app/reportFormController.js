@@ -14,11 +14,16 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'coo
     }
 
     $scope.createLocationObj = function () {
+      var coords = []
+      angular.forEach($scope.reportLocationDetails.geometry.location, function(coord) {
+        coords.push(coord);
+      });
+
       $scope.newReport.location = {
         address: $scope.reportLocationDetails.formatted_address,
         name: $scope.reportLocationDetails.name,
-        lat: $scope.reportLocationDetails.geometry.location.k,
-        lon: $scope.reportLocationDetails.geometry.location.D,
+        lat: coords[0],
+        lon: coords[1],
         placeId: $scope.reportLocationDetails.id
       }
 
