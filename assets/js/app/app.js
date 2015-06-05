@@ -3,7 +3,6 @@ var barBuddyApp = angular.module('barBuddyApp', [
     'ngRoute',
     'ngResource',
     'ngAutocomplete',
-    'snap',
     'infinite-scroll',
     'ngCookies',
     'bs-validation',

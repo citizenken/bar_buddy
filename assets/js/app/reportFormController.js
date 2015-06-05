@@ -1,4 +1,4 @@
-barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'cookieHandler', function ($scope, Report, snapRemote, cookieHandler) {
+barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'cookieHandler', function ($scope, Report, cookieHandler) {
     $scope.reportLocationOptions = { types: 'establishment', country: 'us' }
     $scope.cleanReportLocationDetails = {}
     $scope.cleanReportLocation = ''
@@ -34,7 +34,9 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'snapRemote', 'coo
 
     $scope.sendReport = function () {
       Report.save($scope.newReport, function () {
-        snapRemote.toggle('left')
+        $('#layout').toggleClass('active')
+        $('#menu').toggleClass('active')
+        $('#menuLink').toggleClass('active')
         $scope.cleanReportForm()
       })
     }

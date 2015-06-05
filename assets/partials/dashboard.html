@@ -1,10 +1,10 @@
 <div id="dashboard">
   <h1>Welcome</h1>
-    <button snap-toggle="left">Create Report</button>
     <div id="report_container" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false">
       <div class="list-group" ng-repeat="report in dashboardReports">
-        <div class="list-group-item">
+        <div id="report_{{ report.id }}" class="list-group-item" lat="{{ report.location.lat }}" lon="{{ report.location.lon }}">
           <h3 class="list-group-item-heading">
+              <span>{{ report.id }}</span>
               <a href="#/reporter/{{ report.reporter.id }}">{{ report.reporter.name }}</a>
               <span>@</span>
               <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>
@@ -13,5 +13,6 @@
           <p class="list-group-item-text">{{ report.content }}</p>
         </div>
       </div>
+      <div id="coords"></div>
     </div>
 </div>

@@ -14,7 +14,7 @@ module.exports = {
     address   : { type: 'string', required: true },
     lat       : { type: 'float' },
     lon       : { type: 'float' },
-    placeId   : { type: 'string', required: true},
+    placeId   : { type: 'string'},
     inReports : { collection: 'report', via: 'location' }
   },
 

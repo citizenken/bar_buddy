@@ -1,9 +1,7 @@
 <style>
 .angular-google-map-container {
     height: 500px;
-    width: 50%;
-    float: right;
-    position: fixed;
+    /*position: fixed;*/
 }
 
 .hidden {
@@ -16,8 +14,8 @@
         <p ng-if="!mapAllowed">Geolocation info is required to enable the report map</p>
     </div>
     <div id="mapContainer" ng-style="hiddenMap" ng-if="mapAllowed">
-        <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-            <ui-gmap-markers models="mapMarkers" coords="'self'" options="'options'" pan="true" fit="false" doCluster="true">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' refresh='map.refresh'>
+            <ui-gmap-markers models="mapMarkers" coords="'self'" options="'options'" fit="false" doCluster="true">
                 <ui-gmap-windows show="true">
                     <div ng-non-bindable>{{location}}</div>
                 </ui-gmap-windows>

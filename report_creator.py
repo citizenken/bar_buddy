@@ -6,14 +6,7 @@ import copy
 import json
 
 report = {
-    "composition": {
-        "value": None,
-        "label": "testing"
-    },
-    "count": {
-        "value": None,
-        "label": "Testing"
-    },
+    "content": None,
     "location": None,
     "reporter": None
 }
@@ -61,19 +54,18 @@ def generate_reports():
 
   total_reports = sys.argv[1]
   iterator = 0
-  url = "http://localhost:1337/report"
+  url = "http://localhost:1337/report?access_token=DELTaQ1KYpeoQuWilyppbQnwjvBGPG0b%2Bdtr9zF4SEwjedNtv7eBQpzW9ocNW9QC"
 
   while (iterator < int(total_reports)):
     r = copy.deepcopy(report)
-    r["composition"]["value"] = randint(0,15)
-    r["count"]["value"] = randint(0,15)
+    r["content"] = "test report" + str(iterator)
     r["location"] = locations[randint(0,4)]
     r["reporter"] = reporters[randint(0,7)]
     r_json = json.dumps(r)
 
     requests.post(url, data=r_json)
     print "Submitting report " + str(iterator) + "/" + total_reports
-    time.sleep(2)
+    time.sleep(1)
     iterator = iterator + 1
 
 generate_reports()
