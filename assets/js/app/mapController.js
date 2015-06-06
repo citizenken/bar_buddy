@@ -73,7 +73,6 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
     })
 
     var resetMap = function (coords) {
-      console.log('hello')
       $scope.topReportCoords = coords
       $scope.map.center = $scope.topReportCoords;
       $scope.$apply(function() {

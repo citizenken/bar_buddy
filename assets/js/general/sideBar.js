@@ -4,7 +4,6 @@ $(document).ready(function () {
         menuLink = $('#menuLink');
 
     menuLink.on('click', function() {
-        console.log('snore')
         layout.toggleClass('active')
         menu.toggleClass('active')
         menuLink.toggleClass('active')
