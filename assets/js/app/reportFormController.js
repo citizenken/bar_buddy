@@ -5,6 +5,9 @@ barBuddyApp.controller('ReportFormCtrl', ['$scope', 'Report', 'cookieHandler', f
     $scope.cleanReport = {
       count: ''
     }
+    $scope.newReport = {
+      overall: true
+    }
 
     $scope.cleanReportForm = function () {
       $scope.newReport = angular.copy($scope.cleanReport)

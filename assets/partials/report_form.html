@@ -1,10 +1,13 @@
 <div ng-controller="ReportFormCtrl">
-	<form name="reportForm">
+	<form name="reportForm" class=>
 	    <h1>Create a New Report</h1>
-	    <label for="location">Location</label>
+	    <label for="location">Location:</label></br>
 	    <input type="text" id="location" class="form-control" ng-autocomplete ng-model="reportLocation" details="reportLocationDetails" options="reportLocationOptions"/></br>
 	    <label for="content">Content:</label></br>
         <textarea id="content" ng-model="newReport.content"/></br>
+        <label for="overall">How's the bar right now?</label></br>
+        <input type="radio" name="overall" ng-model="newReport.overall" ng-value="true">Good</input>
+        <input type="radio" name="overall" ng-model="newReport.overall" ng-value="false">Bad</input></br>
 	    <input type="button" ng-click="createLocationObj()" value="Submit" />
 	</form>
 </div>

@@ -1,20 +1,29 @@
-barBuddyApp.controller('LocationDetailCtrl', ['$scope', '$stateParams', 'reportSocket', function ($scope, $stateParams, reportSocket) {
-    locationId = $stateParams.locationId
+barBuddyApp.controller('LocationDetailCtrl', ['$scope', '$routeParams', 'reportSocket', function ($scope, $routeParams, reportSocket) {
+    locationId = $routeParams.locationId
     socketInfo = {
       url: '/location/' + locationId + '/reports',
       socketEvent: 'newLocationReport'
     }
 
-    reportSocket.getReports(socketInfo, $scope)
-
     $scope.locationReports = []
+    $scope.page = 0
+
+    $scope.nextPage = function() {
+      $scope.page += 1
+      reportSocket.getReports(socketInfo, $scope.page, $scope)
+    }
+
+    reportSocket.getReports(socketInfo, $scope.page, $scope)
+
     $scope.$on(socketInfo.socketEvent, function (event, data) {
-      if (data.length) {
-        $scope.locationReports = $scope.locationReports.concat(data);
-      } else {
-        $scope.locationReports.push(data)
+      if (angular.isArray(data) && data.length > 0 || data.id) {
+        if (data.length) {
+          $scope.locationReports = $scope.locationReports.concat(data);
+        } else {
+          $scope.locationReports.unshift(data)
+        }
+        $scope.$apply();
       }
-      $scope.$apply();
     })
 
 }])

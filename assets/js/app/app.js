@@ -1,5 +1,4 @@
 var barBuddyApp = angular.module('barBuddyApp', [
-    // 'ui.router',
     'ngRoute',
     'ngResource',
     'ngAutocomplete',

@@ -1,9 +1,19 @@
 <div id="location">
-  <h1>{{ locationReports[0].location.name}}</h1>
-  <button snap-toggle="left">Create Report</button>
   <a href="#/">Back to dashboard</a>
-  <ul>
-    <li ng-repeat="report in locationReports | orderBy:'createdAt':true">
-      <a href="#/reporter/{{ report.reporter.id }}">{{ report.reporter.name }}</a> is at {{ report.location.name }}: {{ report.count.label }} {{ report.composition.label }}
-  </ul>
+  <h1>{{ locationReports[0].location.name}}</h1>
+    <h3>Recent reports</h3>
+      <div id="locaiton_report_container" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false">
+      <div class="list-group" ng-repeat="report in locationReports">
+        <div id="report_{{ report.id }}" class="list-group-item" lat="{{ report.location.lat }}" lon="{{ report.location.lon }}">
+          <h3 class="list-group-item-heading">
+              <!-- <span>{{ report.id }}</span> -->
+              <!-- <a href="#/reporter/{{ report.reporter.id }}"> -->
+              {{ report.reporter.name }}
+              <!-- </a> -->
+              <h5>{{ report.createdAt | date:'medium' }}</h5>
+          </h3>
+          <p class="list-group-item-text">{{ report.content }}</p>
+        </div>
+      </div>
+    </div>
 </div>

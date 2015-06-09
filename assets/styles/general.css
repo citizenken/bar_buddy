@@ -1,0 +1,11 @@
+.negative {
+	background-color: rgb(255, 139, 139)
+}
+
+.positive {
+	background-color: rgb(148, 255, 141)
+}
+
+.fixed {
+position: fixed;
+}
