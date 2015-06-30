@@ -54,7 +54,7 @@ def generate_reports():
 
   total_reports = sys.argv[1]
   iterator = 0
-  url = "http://localhost:1337/report?access_token=DELTaQ1KYpeoQuWilyppbQnwjvBGPG0b%2Bdtr9zF4SEwjedNtv7eBQpzW9ocNW9QC"
+  url = "http://104.131.189.179:32801/report?access_token=YNjM7V%2Fh0xyUa8v1m%2F9onCStc58jQlmf7NQpSq2AIPdOEGwWmdLPYw1mLaSJB%2B8u%20"
 
   while (iterator < int(total_reports)):
     r = copy.deepcopy(report)

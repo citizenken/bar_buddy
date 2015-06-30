@@ -39,6 +39,9 @@ module.exports.routes = {
   'get /logout': 'AuthController.logout',
 
   'post /auth/:provider': 'AuthController.callback',
-  'post /auth/:provider/:action': 'AuthController.callback'
+  'post /auth/:provider/:action': 'AuthController.callback',
+
+  'post /report/:id/relevence': 'Report.relevence',
+  'get /relevence': 'Report.subscribeToRelevence'
 
 };

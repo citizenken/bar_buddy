@@ -46,6 +46,35 @@ module.exports = {
       // });
     },
 
+    subscribeToRelevence: function (req, res) {
+      var room = 'sails_model_report_relevence';
+      if (req.isSocket) {
+        sails.sockets.join(req.socket, room);
+        res.json({
+          message: 'Subscribed to a room called '+ room
+        });
+      }
+    },
+
+    relevence: function (req, res) {
+      var relevence = req.body.relevence,
+          reportId = req.params.id;
+
+      Report.findOneById(reportId).exec(function (err, report) {
+        if (err) return res.json(500, {error: err});
+        report.relevence += relevence;
+        report.save(function (err, report) {
+          if (err) return res.json(500, {error: err});
+            res.json(report);
+            sails.sockets.broadcast('sails_model_report_relevence', 'reportRelevence', {
+                verb: 'updated',
+                data: report,
+                id: report[this.primaryKey]
+            });
+        });
+      });
+    },
+
     create: function (req, res) {
 
         var body = req.body;
@@ -63,24 +92,24 @@ module.exports = {
 
         Reporter.findOrCreate({name: body.reporter}, {name: body.reporter})
         .exec(function(err, reporter) {
-          if (err) return res.json(500, {error: err})
+          if (err) return res.json(500, {error: err});
           body.reporter = reporter.id;
           associations.reporter = reporter;
 
           Location.findOrCreate({name: locationData.name}, locationData)
           .exec(function(err, location) {
-            if (err) return res.json(500, {error: err})
+            if (err) return res.json(500, {error: err});
             body.location = location.id;
             associations.location = location;
               Report.create(body)
               .exec(function (err, report) {
-                if (err) return res.json(500, {error: err})
+                if (err) return res.json(500, {error: err});
                   var reportWithAssociations = report;
                   reportWithAssociations.reporter = associations.reporter;
                   reportWithAssociations.location = associations.location;
 
-                  Report.publishCreate(req, reportWithAssociations)
-                  res.json(reportWithAssociations)
+                  Report.publishCreate(req, reportWithAssociations);
+                  res.json(reportWithAssociations);
               });
           });
         });

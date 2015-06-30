@@ -11,12 +11,14 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
-    overall     : { type: 'boolean', required: true}
+    // overall     : { type: 'boolean', required: true, defaultsTo: true},
+    relevence   : { type: 'integer', defaultsTo: 0 }
   },
 
   publishCreate: function (req, report) {
     var watchers = this.watchers();
 
+    // All users are auto subscribed to this room when they make the first get socket request to /report
     sails.sockets.broadcast('sails_model_create_report', 'newReport', {
         verb: 'created',
         data: report,
