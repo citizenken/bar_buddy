@@ -44,23 +44,25 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
         }
         console.log(data)
         angular.forEach(data, function(report) {
-          markerInfo = {
-            id: report.id,
-            location: report.location.name,
-            latitude: report.location.lat,
-            longitude: report.location.lon,
-            options:{
-              place: {
-                location: {
-                  lat: report.location.lat,
-                  lng: report.location.lon
-                },
-                placeId: report.location.placeId
+          if (report.relevence > -5) {
+            markerInfo = {
+              id: report.id,
+              location: report.location.name,
+              latitude: report.location.lat,
+              longitude: report.location.lon,
+              options:{
+                place: {
+                  location: {
+                    lat: report.location.lat,
+                    lng: report.location.lon
+                  },
+                  placeId: report.location.placeId
+                }
               }
             }
+            $scope.mapMarkers.unshift(markerInfo)
           }
-          $scope.mapMarkers.unshift(markerInfo)
-        }, this);
+        });
           if ($scope.topReportCoords == null) {
             $scope.$apply(function() {
               $scope.map.center = {
@@ -70,6 +72,22 @@ barBuddyApp.controller('MapCtrl', ['$scope', 'reportSocket', 'geolocation', 'uiG
             })
           }
       }
+    });
+
+    $scope.$on('reportRelevence', function (event, data) {
+      var badReport = data.data
+      angular.forEach($scope.mapMarkers, function(report, key) {
+        if (report.id === badReport.id) {
+          console.log(key)
+          $scope.mapMarkers.splice(key, 1)
+          console.log($scope.mapMarkers)
+          // $scope.map.center = {
+          //       latitude: $scope.mapMarkers[0].latitude,
+          //       longitude: $scope.mapMarkers[0].longitude
+          //     }
+          $scope.$apply()
+        }
+      })
     })
 
     var resetMap = function (coords) {

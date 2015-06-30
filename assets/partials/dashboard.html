@@ -2,21 +2,25 @@
   <h1>Welcome</h1>
     <div id="report_container" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false">
       <div class="list-group" ng-repeat="report in dashboardReports">
-        <div id="report_{{ report.id }}" class="list-group-item"
-        lat="{{ report.location.lat }}" lon="{{ report.location.lon }}">
-        <!-- ng-class="{'positive' : report.overall, 'negative' : !report.overall}"> -->
-          <h3 class="list-group-item-heading">
-              <!-- <span>{{ report.id }}</span> -->
-              <!-- <a href="#/reporter/{{ report.reporter.id }}"> -->
-              {{ report.reporter.name }}
-              <!-- </a> -->
-              <span>@</span>
-              <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>
-              <h5>{{ report.createdAt | date:'medium' }}</h5>
-          </h3>
-          <p class="list-group-item-text">{{ report.content }}</p>
-          <h6>Rating: {{report.overall ? "Good" : "Bad"}}</h6>
-        </div>
+          <div ng-if="report.relevence <= -5">
+            <p>This is report is no longer relevent. <a href="" ng-click="showReport(report.id)">Click here to show the report</a></p>
+          </div>
+          <div id="report_{{ report.id }}" class="list-group-item"
+          ng-class="{'hidden': report.relevence <= -5, 'irrelevent': report.relevence <= -5}"
+          lat="{{ report.location.lat }}" lon="{{ report.location.lon }}">
+          <!-- ng-class="{'positive' : report.overall, 'negative' : !report.overall}"> -->
+            <h3 class="list-group-item-heading">
+                <!-- <span>{{ report.id }}</span> -->
+                <!-- <a href="#/reporter/{{ report.reporter.id }}"> -->
+                {{ report.reporter.name }}
+                <!-- </a> -->
+                <span>@</span>
+                <a href="#/location/{{ report.location.id }}">{{ report.location.name }}</a>
+                <h5>{{ report.createdAt | date:'medium' }}</h5>
+            </h3>
+            <p class="list-group-item-text">{{ report.content }}</p>
+            <h6>Rating: {{report.overall ? "Good" : "Bad"}}</h6>
+          </div>
       </div>
     </div>
 </div>

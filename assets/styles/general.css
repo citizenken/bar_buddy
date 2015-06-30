@@ -7,5 +7,9 @@
 }
 
 .fixed {
-position: fixed;
+	position: fixed;
+}
+
+.irrelevent {
+	background-color: lightgray;
 }

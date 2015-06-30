@@ -24,4 +24,19 @@ barBuddyApp.controller('DashboardCtrl', ['$scope', 'reportSocket', function ($sc
         $scope.$apply();
       }
     })
+
+    $scope.$on('reportRelevence', function (event, data) {
+      var badReport = data.data
+      angular.forEach($scope.dashboardReports, function(report, key) {
+        if (report.id === badReport.id) {
+          $scope.dashboardReports[key].relevence = badReport.relevence
+          $scope.$apply()
+        }
+      })
+    })
+
+    $scope.showReport = function (reportId) {
+      var report = angular.element( document.querySelector( '#report_' + reportId ) );
+      report.toggleClass('hidden');
+    }
 }])

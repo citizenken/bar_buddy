@@ -6,21 +6,38 @@ barBuddyApp.service('reportSocket', ['appConfig', function (appConfig) {
           limit: '25',
       }
     }
-
     queryParms.skip = queryParms.limit * page
 
     var self = this,
         url = socketInfo.url,
         socketEvent = socketInfo.socketEvent;
 
+    // subscribe to create reports
+    io.socket.on(socketEvent, function (response) {
+      self.updateReports(socketInfo, scope, response.data)
+    });
+
     io.socket.get(url, queryParms, function (response, extraData) {
       self.updateReports(socketInfo, scope, response)
     });
 
-    io.socket.on(socketEvent, function (response) {
-      self.updateReports(socketInfo, scope, response.data)
-    });
+    this.subRemoveReports(scope)
+
   };
+
+  this.subRemoveReports = function (scope) {
+    var url = '/relevence',
+        socketEvent = 'reportRelevence'
+
+    io.socket.on(socketEvent, function (response) {
+      scope.$emit(socketEvent, response)
+    });
+
+    io.socket.get(url, function (response, extraData) {
+      console.log(response)
+    });
+
+  }
 
   this.updateReports = function (socketInfo, scope, response) {
     scope.$emit(socketInfo.socketEvent, response)
