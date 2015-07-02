@@ -7,10 +7,7 @@ main () {
     schema_dir="./schemas"
     mode="update"
     env="${NODE_ENV}"
-    host="${DB_HOST}"
     name="${DB_NAME}"
-    pass="${DB_PASS}"
-    db_user="${DB_USER}"
 
     while getopts ":c:C" opt; do
       case $opt in
@@ -44,22 +41,6 @@ main () {
 }
 
 check_variables () {
-    if [[ -z "${host}" ]]; then
-        host="localhost"
-    fi
-
-    if [[ -z "${name}" ]]; then
-        name="bar_buddy"
-    fi
-
-    if [[ -z "${pass}" ]]; then
-        read -sp "Set DB password:" pass
-    fi
-
-    if [[ -z "${db_user}" ]]; then
-        db_user="root"
-    fi
-
     if [[ "${env}" == "production" ]]; then
         read -p "Env is currently production. OK to update schema?(y/n):" UPDATE
         if [[ "${UPDATE}" == "n" ]]; then
@@ -72,13 +53,15 @@ check_variables () {
 
 get_current_schema () {
     query="SELECT * FROM current_schema;"
-    mysql -u "${db_user}" --password="${pass}" -h "${host}" -D "${name}" -e "${query}"
+    mysql --database="${name}" -e "${query}"
+    echo "Getting current schema"
 }
 
 create_schema () {
     mkdir -p schemas
-    mysqldump -u "${db_user}" --password="${pass}" -h "${host}" "${name}" --no-data \
+    mysqldump "${name}" --no-data \
     > schemas/$(date +%s)_"${schema}".sql
+    echo "Creating new schema"
 }
 
 update_schema () {
@@ -102,8 +85,10 @@ execute_update () {
     queries="CREATE TABLE IF NOT EXISTS current_schema (ID int NOT NULL, schema_name VARCHAR(50) NOT NULL, executed TIMESTAMP, PRIMARY KEY (ID));"
     queries+="REPLACE INTO current_schema (ID, schema_name) VALUES(1, '${schema_name}');"
 
-    mysql -u "${db_user}" --password="${pass}" -h "${host}" -D "${name}" -e "${queries}"
-    mysql -u "${db_user}" --password="${pass}" -h "${host}" -D "${name}" < "${schema}"
+    mysql --database="${name}" -e "${queries}"
+    echo "Updating current schema table"
+    mysql --database="${name}" < "${schema}"
+    echo "Successfully updated DB to ${schema_name}"
 }
 
 

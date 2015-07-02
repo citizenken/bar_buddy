@@ -11,7 +11,7 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
-    // overall     : { type: 'boolean', required: true, defaultsTo: true},
+    overall     : { type: 'boolean', required: true, defaultsTo: true},
     relevence   : { type: 'integer', defaultsTo: 0 }
   },
 
