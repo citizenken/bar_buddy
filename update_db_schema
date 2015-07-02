@@ -8,6 +8,9 @@ main () {
     mode="update"
     env="${NODE_ENV}"
     name="${DB_NAME}"
+    password="${DB_PASS}"
+    host="${DB_HOST}"
+    user="${DB_USER}"
 
     while getopts ":c:C" opt; do
       case $opt in
@@ -53,28 +56,37 @@ check_variables () {
 
 get_current_schema () {
     query="SELECT * FROM current_schema;"
-    mysql --database="${name}" -e "${query}"
+    if [[ "${NODE_ENV}" == "prod" ]]; then
+        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" -e "${query}"
+    else
+    	mysql --database="${name}" -e "${query}"
+    fi
     echo "Getting current schema"
 }
 
 create_schema () {
     mkdir -p schemas
-    mysqldump "${name}" --no-data \
-    > schemas/$(date +%s)_"${schema}".sql
+    if [[ "${NODE_ENV}" == "prod" ]]; then
+        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" \
+	 > schemas/$(date +%s)_"${schema}".sql
+    else    
+	mysqldump "${name}" --no-data \
+	 > schemas/$(date +%s)_"${schema}".sql
+    fi
     echo "Creating new schema"
 }
 
 update_schema () {
     if [[ -z "${schema}" ]]; then
-        schema=$(echo "${schemas}" | sort | head -n 1)
-        execute_update
+        schema=$(echo "${schemas}" | sort -r | head -n 1)
+	execute_update
     elif [[ ! -e "${schema}" ]]; then
         echo "Selected schema is not valid"
         echo "Please choose one of the following schemas:"
         echo "${schemas}"
         exit
     else
-        execute_update
+	 execute_update
     fi
 }
 
@@ -85,10 +97,17 @@ execute_update () {
     queries="CREATE TABLE IF NOT EXISTS current_schema (ID int NOT NULL, schema_name VARCHAR(50) NOT NULL, executed TIMESTAMP, PRIMARY KEY (ID));"
     queries+="REPLACE INTO current_schema (ID, schema_name) VALUES(1, '${schema_name}');"
 
-    mysql --database="${name}" -e "${queries}"
-    echo "Updating current schema table"
-    mysql --database="${name}" < "${schema}"
-    echo "Successfully updated DB to ${schema_name}"
+    if [[ "${NODE_ENV}" == "prod" ]]; then
+        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" -e "${queries}"
+        echo "Updating current schema table"
+        mysql --database="${name}"  --password="${password}" --host="${host}" --user="${user}" < "${schema}"
+        echo "Successfully updated DB to ${schema_name}"
+    else
+        mysql --database="${name}" -e "${queries}"
+        echo "Updating current schema table"
+        mysql --database="${name}" < "${schema}"
+        echo "Successfully updated DB to ${schema_name}"
+    fi
 }
 
 
