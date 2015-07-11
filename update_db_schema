@@ -11,6 +11,7 @@ main () {
     password="${DB_PASS}"
     host="${DB_HOST}"
     user="${DB_USER}"
+    port=":${DB_PORT}"
 
     while getopts ":c:C" opt; do
       case $opt in
@@ -57,7 +58,7 @@ check_variables () {
 get_current_schema () {
     query="SELECT * FROM current_schema;"
     if [[ "${NODE_ENV}" == "prod" ]]; then
-        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" -e "${query}"
+        mysql --database="${name}" --password="${password}" --host="${host}${port}" --user="${user}" -e "${query}"
     else
     	mysql --database="${name}" -e "${query}"
     fi
@@ -67,9 +68,9 @@ get_current_schema () {
 create_schema () {
     mkdir -p schemas
     if [[ "${NODE_ENV}" == "prod" ]]; then
-        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" \
+        mysql --database="${name}" --password="${password}" --host="${host}${port}" --user="${user}" \
 	 > schemas/$(date +%s)_"${schema}".sql
-    else    
+    else
 	mysqldump "${name}" --no-data \
 	 > schemas/$(date +%s)_"${schema}".sql
     fi
@@ -98,9 +99,9 @@ execute_update () {
     queries+="REPLACE INTO current_schema (ID, schema_name) VALUES(1, '${schema_name}');"
 
     if [[ "${NODE_ENV}" == "prod" ]]; then
-        mysql --database="${name}" --password="${password}" --host="${host}" --user="${user}" -e "${queries}"
+        mysql --database="${name}" --password="${password}" --host="${host}${port}" --user="${user}" -e "${queries}"
         echo "Updating current schema table"
-        mysql --database="${name}"  --password="${password}" --host="${host}" --user="${user}" < "${schema}"
+        mysql --database="${name}"  --password="${password}" --host="${host}${port}" --user="${user}" < "${schema}"
         echo "Successfully updated DB to ${schema_name}"
     else
         mysql --database="${name}" -e "${queries}"
