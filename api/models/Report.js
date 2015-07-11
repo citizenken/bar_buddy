@@ -12,7 +12,8 @@ module.exports = {
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
     overall     : { type: 'boolean', required: true, defaultsTo: true},
-    relevence   : { type: 'integer', defaultsTo: 0 }
+    relevence   : { type: 'integer', defaultsTo: 0 },
+    voted       : { collection: 'User', via: 'votedReviews' }
   },
 
   publishCreate: function (req, report) {

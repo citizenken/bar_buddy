@@ -3,11 +3,12 @@ var User = {
   schema: true,
 
   attributes: {
-    username  : { type: 'string', unique: true },
-    email     : { type: 'email',  unique: true },
-    passports : { collection: 'Passport', via: 'user' },
-    isActive: { type: 'boolean', defaultsTo: true, required: true },
-    isAdmin: { type: 'boolean', defaultsTo: false, protected: true },
+    username     : { type: 'string', unique: true },
+    email        : { type: 'email',  unique: true },
+    votedReviews : { collection: 'Report', via: 'voted'},
+    passports    : { collection: 'Passport', via: 'user' },
+    isActive     : { type: 'boolean', defaultsTo: true, required: true },
+    isAdmin      : { type: 'boolean', defaultsTo: false, protected: true },
   }
 };
 

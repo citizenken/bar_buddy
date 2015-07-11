@@ -58,11 +58,15 @@ module.exports = {
 
     relevence: function (req, res) {
       var relevence = req.body.relevence,
-          reportId = req.params.id;
+          reportId = req.params.id,
+          user = req.body.user;
 
       Report.findOneById(reportId).exec(function (err, report) {
         if (err) return res.json(500, {error: err});
         report.relevence += relevence;
+        if (user) {
+          report.voted.add(user);
+        }
         report.save(function (err, report) {
           if (err) return res.json(500, {error: err});
             res.json(report);

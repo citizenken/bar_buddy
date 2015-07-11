@@ -46,7 +46,7 @@ exports.register = function (req, res, next) {
   User.create({
     username : username
   , email    : email
-  }, function (err, user) {
+  }).populate('votedReviews').exec(function (err, user) {
     if (err) {
       if (err.code === 'E_VALIDATION') {
         if (err.invalidAttributes.email) {
@@ -144,7 +144,7 @@ exports.login = function (req, identifier, password, next) {
     query.username = identifier;
   }
 
-  User.findOne(query, function (err, user) {
+  User.findOne(query).populate('votedReviews').exec(function (err, user) {
     if (err) {
       return next(err);
     }
@@ -168,7 +168,7 @@ exports.login = function (req, identifier, password, next) {
           if (err) {
             return next(err);
           }
-          console.log('in passport find. this is the res', res)
+
           if (!res) {
             req.flash('error', 'Error.Passport.Password.Wrong');
             return next(null, false);

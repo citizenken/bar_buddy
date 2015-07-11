@@ -42,6 +42,8 @@ module.exports.routes = {
   'post /auth/:provider/:action': 'AuthController.callback',
 
   'post /report/:id/relevence': 'Report.relevence',
-  'get /relevence': 'Report.subscribeToRelevence'
+  'get /relevence': 'Report.subscribeToRelevence',
+
+  'post /user/:id/addRelevence': 'User.addRelevence'
 
 };

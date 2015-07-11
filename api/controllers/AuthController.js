@@ -158,7 +158,7 @@ var AuthController = {
       res.json('400', response)
     }
     passport.callback(req, res, function (err, user, challenges, statuses) {
-      console.log(err, user, challenges)
+      // console.trace(user)
       if (err || !user) {
         return tryAgain(err, challenges);
       }
@@ -174,7 +174,6 @@ var AuthController = {
         Passport.findOne({user: user.id}).exec(function (err, passport) {
           if (err) { return res.send(err); }
           res.set('Authentication', passport.accessToken)
-
           // Upon successful login, send the user to the homepage were req.user
           // will be available.
           res.send(user);
