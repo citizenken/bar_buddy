@@ -8,7 +8,8 @@ import json
 report = {
     "content": None,
     "location": None,
-    "reporter": None
+    "reporter": None,
+    "overall": None
 }
 
 reporters = ['chonel', 'jorden', 'ken', 'nicole', 'jeff', 'ian', 'matt', 'cameron']
@@ -54,16 +55,17 @@ def generate_reports():
 
   total_reports = sys.argv[1]
   iterator = 0
-  url = "http://104.131.189.179:32801/report?access_token=YNjM7V%2Fh0xyUa8v1m%2F9onCStc58jQlmf7NQpSq2AIPdOEGwWmdLPYw1mLaSJB%2B8u%20"
+  url = "http://104.131.189.179:32803/report?access_token=xZ2IDdUZyeC3rf6KojRVM6VQkLabFhXVXPMi86X%2BtDFXcj4R8KdtOAc6%2F89%2FxupS"
 
   while (iterator < int(total_reports)):
     r = copy.deepcopy(report)
     r["content"] = "test report" + str(iterator)
     r["location"] = locations[randint(0,4)]
     r["reporter"] = reporters[randint(0,7)]
+    r["overall"] = True
     r_json = json.dumps(r)
 
-    requests.post(url, data=r_json)
+    result = requests.post(url, data=r_json)
     print "Submitting report " + str(iterator) + "/" + total_reports
     time.sleep(1)
     iterator = iterator + 1

@@ -11,7 +11,8 @@ module.exports = {
     reporter    : { model: 'reporter', required: true },
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
-    overall     : { type: 'boolean', required: true, defaultsTo: true},
+    image       : { type: 'string'},
+    rating      : { type: 'boolean', required: true, defaultsTo: true},
     relevence   : { type: 'integer', defaultsTo: 0 },
     voted       : { collection: 'User', via: 'votedReviews' }
   },
@@ -26,16 +27,16 @@ module.exports = {
         id: report[this.primaryKey]
     });
 
-    var reportId = report.reporter.id
-    room = Reporter.room(reportId, 'newReporterReport')
+    var reportId = report.reporter.id;
+    room = Reporter.room(reportId, 'newReporterReport');
     sails.sockets.broadcast(room, 'newReporterReport', {
         verb: 'created',
         data: report,
         id: report[this.primaryKey]
     });
 
-    var reportId = report.location.id
-    room = Reporter.room(reportId, 'newLocationReport')
+    reportId = report.location.id;
+    room = Reporter.room(reportId, 'newLocationReport');
     sails.sockets.broadcast(room, 'newLocationReport', {
         verb: 'created',
         data: report,
