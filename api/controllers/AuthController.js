@@ -175,6 +175,7 @@ var AuthController = {
           if (err) { return res.send(err); }
           res.set('Authentication', passport.accessToken);
           res.set('Access-Control-Allow-Headers', 'Authentication');
+          sails.log.info(res._headers)
           // Upon successful login, send the user to the homepage were req.user
           // will be available.
           res.send(user);
