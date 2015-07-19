@@ -8,13 +8,13 @@
 module.exports = {
 
   attributes: {
-    reporter    : { model: 'reporter', required: true },
+    reporter    : { model: 'user', required: true },
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
     image       : { type: 'string'},
     rating      : { type: 'boolean', required: true, defaultsTo: true},
     relevence   : { type: 'integer', defaultsTo: 0 },
-    voted       : { collection: 'User', via: 'votedReviews' }
+    voted       : { collection: 'user', via: 'votedReviews' }
   },
 
   publishCreate: function (req, report) {

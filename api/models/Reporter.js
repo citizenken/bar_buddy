@@ -5,12 +5,12 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
-module.exports = {
+// module.exports = {
 
-  attributes: {
-    name           : { type: 'string', required: true, unique: true },
-    reportsCreated : { collection: 'report', via: 'reporter' }
-  },
+//   attributes: {
+//     name           : { type: 'string', required: true, unique: true },
+//     reportsCreated : { collection: 'report', via: 'reporter' }
+//   },
 
-};
+// };
 

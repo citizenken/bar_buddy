@@ -94,7 +94,7 @@ module.exports = {
         var locationData = body.location,
             associations = {};
 
-        Reporter.findOrCreate({name: body.reporter}, {name: body.reporter})
+        User.findOneById(body.reporter)
         .exec(function(err, reporter) {
           if (err) return res.json(500, {error: err});
           body.reporter = reporter.id;

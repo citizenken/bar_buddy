@@ -25,7 +25,7 @@ module.exports = {
    * `ReporterController.subscribeToLocationReports()`
    */
   subscribeToLocationReports: function (req, locationId) {
-    sails.sockets.join(req.socket, Reporter.room(locationId, 'newLocationReport'));
+    sails.sockets.join(req.socket, User.room(locationId, 'newLocationReport'));
   },
 };
 

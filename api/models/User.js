@@ -5,8 +5,9 @@ var User = {
   attributes: {
     username     : { type: 'string', unique: true },
     email        : { type: 'email',  unique: true },
-    votedReviews : { collection: 'Report', via: 'voted'},
     passports    : { collection: 'Passport', via: 'user' },
+    votedReviews : { collection: 'Report', via: 'voted'},
+    reportsCreated : { collection: 'report', via: 'reporter' },
     isActive     : { type: 'boolean', defaultsTo: true, required: true },
     isAdmin      : { type: 'boolean', defaultsTo: false, protected: true },
   }
