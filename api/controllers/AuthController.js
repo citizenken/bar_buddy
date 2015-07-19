@@ -173,7 +173,8 @@ var AuthController = {
 
         Passport.findOne({user: user.id}).exec(function (err, passport) {
           if (err) { return res.send(err); }
-          res.set('Authentication', passport.accessToken)
+          res.set('Authentication', passport.accessToken);
+          res.set('Access-Control-Allow-Headers', 'Authentication');
           // Upon successful login, send the user to the homepage were req.user
           // will be available.
           res.send(user);
