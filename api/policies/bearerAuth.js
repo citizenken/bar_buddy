@@ -13,7 +13,7 @@
  */
 
 module.exports = function (req, res, next) {
-
+  sails.log.debug(req.params);
   return passport.authenticate('bearer', { session: false })(req, res, next);
 
 };
