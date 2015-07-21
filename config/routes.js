@@ -36,10 +36,21 @@ module.exports.routes = {
   'post /report': 'Report.create',
   'get /user/:id/reports': 'user.reports',
   'get /location/:id/reports': 'Location.reports',
-  'get /logout': 'AuthController.logout',
+  // 'get /logout': 'AuthController.logout',
 
   'post /auth/:provider': 'AuthController.callback',
   'post /auth/:provider/:action': 'AuthController.callback',
+
+  'get /login': 'AuthController.login',
+  'get /logout': 'AuthController.logout',
+  'get /register': 'AuthController.register',
+
+  'post /auth/local': 'AuthController.callback',
+  'post /auth/local/:action': 'AuthController.callback',
+
+  'get /auth/:provider': 'AuthController.provider',
+  'get /auth/:provider/callback': 'AuthController.callback',
+  'get /auth/:provider/:action': 'AuthController.callback',
 
   'post /report/:id/relevence': 'Report.relevence',
   'get /relevence': 'Report.subscribeToRelevence',

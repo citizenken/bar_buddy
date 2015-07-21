@@ -124,6 +124,7 @@ var AuthController = {
    * @param {Object} res
    */
   callback: function (req, res) {
+
     function tryAgain (err, challenges) {
 
       // Only certain error messages are returned via req.flash('error', someError)
@@ -141,24 +142,23 @@ var AuthController = {
 
       var flashError = req.flash('error')[0];
 
-      response = {'form': req.body}
+      response = {'form': req.body};
 
       if (err) {
-        response['full_error'] = JSON.stringify(err)
+        response.full_error = JSON.stringify(err);
       }
 
       if (challenges) {
-        response['challenges'] = challenges
+        response.challenges = challenges;
       }
 
       if (flashError) {
-        response['user_error'] = req.__(flashError)
+        response.user_error = req.__(flashError);
       }
 
-      res.json('400', response)
+      res.json('400', response);
     }
     passport.callback(req, res, function (err, user, challenges, statuses) {
-      // console.trace(user)
       if (err || !user) {
         return tryAgain(err, challenges);
       }
@@ -169,16 +169,16 @@ var AuthController = {
         }
 
         // Mark the session as authenticated to work with default Sails sessionAuth.js policy
-        req.session.authenticated = true
+        req.session.authenticated = true;
 
-        Passport.findOne({user: user.id}).exec(function (err, passport) {
-          if (err) { return res.send(err); }
+        // Get the auth header from it's temporary storage in req, then delete it
+        if (req.hasOwnProperty('response_headers') && req.response_headers.hasOwnProperty('accessToken')) {
           res.set('Access-Control-Expose-Headers', 'Authentication');
-          res.set('Authentication', passport.accessToken);
-          // Upon successful login, send the user to the homepage were req.user
-          // will be available.
-          res.send(user);
-        })
+          res.set('Authentication', req.response_headers.accessToken);
+          delete req.response_headers;
+        }
+
+        res.send(user);
       });
     });
   },

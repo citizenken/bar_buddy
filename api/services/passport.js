@@ -132,6 +132,15 @@ passport.connect = function (req, query, profile, next) {
               return next(err);
             }
 
+            // Set response headers in req, because the controller has access to req
+            req.response_headers = {};
+            if (!passport.hasOwnProperty('accessToken') &&
+              passport.hasOwnProperty('tokens') &&
+              passport.tokens.hasOwnProperty('accessToken')) {
+              // If the auth was oaquth2, we'll hit this
+              req.response_headers.accessToken = passport.tokens.accessToken;
+            }
+
             next(err, user);
           });
         });
@@ -238,12 +247,13 @@ passport.callback = function (req, res, next) {
       this.protocols.local.disconnect(req, res, next);
     }
     else {
-      console.log(action, req.user)
       next(new Error('Invalid action'));
     }
   } else {
     if (action === 'disconnect' && req.user) {
       this.disconnect(req, res, next) ;
+    } else if (action === 'connect') {
+      this.connectOauth2Bearer(req, next);
     } else {
       // The provider will redirect the user to this URL after approval. Finish
       // the authentication process by attempting to obtain an access token. If
@@ -252,6 +262,21 @@ passport.callback = function (req, res, next) {
       this.authenticate(provider, next)(req, res, req.next);
     }
   }
+};
+
+/**
+ * This function parses req, pulling out the params required to connect an Oauth2 account
+ **/
+passport.connectOauth2Bearer = function (req, next) {
+  var accessToken = req.body.accessToken,
+      profile = req.body.profile || {},
+      refreshToken;
+
+  if (req.hasOwnProperty('refreshToken')){
+    refreshToken = req.body.refreshToken;
+  }
+
+  this.protocols.oauth2(req, accessToken, refreshToken, profile, next);
 };
 
 /**

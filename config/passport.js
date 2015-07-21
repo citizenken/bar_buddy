@@ -54,15 +54,16 @@ module.exports.passport = {
   //   }
   // },
 
-  // google: {
-  //   name: 'Google',
-  //   protocol: 'oauth2',
-  //   strategy: require('passport-google-oauth').OAuth2Strategy,
-  //   options: {
-  //     clientID: 'your-client-id',
-  //     clientSecret: 'your-client-secret'
-  //   }
-  // },
+  google: {
+    name: 'Google',
+    protocol: 'oauth2',
+    strategy: require('passport-google-oauth').OAuth2Strategy,
+    options: {
+      clientID: '122101047864-bjkh66ecn0nj91phbme8rk7hg4rquo96.apps.googleusercontent.com',
+      clientSecret: 'JB5bkf-E5YRG6ZE0FfHAH0Pn',
+      scope: ['email']
+    }
+  },
 
   // cas: {
   //   name: 'CAS',

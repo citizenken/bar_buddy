@@ -78,6 +78,11 @@ exports.register = function (req, res, next) {
         });
       }
 
+      req.response_headers = {};
+      if (passport.hasOwnProperty('accessToken') &&
+        !passport.hasOwnProperty('tokens')) {
+        req.response_headers.accessToken = passport.accessToken;
+      }
       next(null, user);
     });
   });
@@ -112,10 +117,21 @@ exports.connect = function (req, res, next) {
       , password : password
       , user     : user.id
       }, function (err, passport) {
+
+        req.response_headers = {};
+        if (passport.hasOwnProperty('accessToken') &&
+          !passport.hasOwnProperty('tokens')) {
+          req.response_headers.accessToken = passport.accessToken;
+        }
         next(err, user);
       });
     }
     else {
+      req.response_headers = {};
+      if (passport.hasOwnProperty('accessToken') &&
+        !passport.hasOwnProperty('tokens')) {
+        req.response_headers.accessToken = passport.accessToken;
+      }
       next(null, user);
     }
   });
@@ -173,6 +189,13 @@ exports.login = function (req, identifier, password, next) {
             req.flash('error', 'Error.Passport.Password.Wrong');
             return next(null, false);
           } else {
+
+            req.response_headers = {};
+            if (passport.hasOwnProperty('accessToken') &&
+              !passport.hasOwnProperty('tokens')) {
+              req.response_headers.accessToken = passport.accessToken;
+            }
+
             return next(null, user);
           }
         });
