@@ -13,7 +13,6 @@
  */
 
 module.exports = function (req, res, next) {
-  console.log(req.headers);
   return passport.authenticate('bearer', { session: false })(req, res, next);
 
 };

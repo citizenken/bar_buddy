@@ -22,6 +22,7 @@ module.exports = function (req, accessToken, refreshToken, profile, next) {
   var query    = {
       identifier : profile.id
     , protocol   : 'oauth2'
+    , accessToken: accessToken
     , tokens     : { accessToken: accessToken }
     };
 

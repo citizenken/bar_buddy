@@ -172,7 +172,7 @@ var AuthController = {
         req.session.authenticated = true;
 
         // Get the auth header from it's temporary storage in req, then delete it
-        if (req.hasOwnProperty('response_headers') && req.response_headers.hasOwnProperty('accessToken')) {
+        if (req.response_headers.accessToken) {
           res.set('Access-Control-Expose-Headers', 'Authentication');
           res.set('Authentication', req.response_headers.accessToken);
           delete req.response_headers;

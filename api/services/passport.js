@@ -64,8 +64,9 @@ passport.protocols = require('./protocols');
  * @param {Function} next
  */
 passport.connect = function (req, query, profile, next) {
-  var user = {}
-    , provider;
+  var user = {},
+      self = this,
+      provider;
 
   // Get the authentication provider from the query.
   query.provider = req.param('provider');
@@ -105,6 +106,7 @@ passport.connect = function (req, query, profile, next) {
       return next(err);
     }
 
+
     if (!req.user) {
       // Scenario: A new user is attempting to sign up using a third-party
       //           authentication provider.
@@ -132,15 +134,7 @@ passport.connect = function (req, query, profile, next) {
               return next(err);
             }
 
-            // Set response headers in req, because the controller has access to req
-            req.response_headers = {};
-            if (!passport.hasOwnProperty('accessToken') &&
-              passport.hasOwnProperty('tokens') &&
-              passport.tokens.hasOwnProperty('accessToken')) {
-              // If the auth was oaquth2, we'll hit this
-              req.response_headers.accessToken = passport.tokens.accessToken;
-            }
-
+            self.setAuthHeader(req, passport);
             next(err, user);
           });
         });
@@ -152,6 +146,7 @@ passport.connect = function (req, query, profile, next) {
         // If the tokens have changed since the last session, update them
         if (query.hasOwnProperty('tokens') && query.tokens !== passport.tokens) {
           passport.tokens = query.tokens;
+          passport.accessToken = query.accessToken;
         }
 
         // Save any updates to the Passport before moving on
@@ -160,6 +155,7 @@ passport.connect = function (req, query, profile, next) {
             return next(err);
           }
 
+          self.setAuthHeader(req, passport);
           // Fetch the user associated with the Passport
           User.findOne(passport.user.id, next);
         });
@@ -177,6 +173,7 @@ passport.connect = function (req, query, profile, next) {
             return next(err);
           }
 
+          self.setAuthHeader(req, passport);
           next(err, req.user);
         });
       }
@@ -187,6 +184,15 @@ passport.connect = function (req, query, profile, next) {
       }
     }
   });
+};
+
+passport.setAuthHeader = function (req, passport) {
+    // Set response headers in req, because the controller has access to req
+  req.response_headers = {};
+  if (passport.accessToken) {
+    // If the auth was oaquth2, we'll hit this
+    req.response_headers.accessToken = passport.tokens.accessToken;
+  }
 };
 
 /**
@@ -270,11 +276,7 @@ passport.callback = function (req, res, next) {
 passport.connectOauth2Bearer = function (req, next) {
   var accessToken = req.body.accessToken,
       profile = req.body.profile || {},
-      refreshToken;
-
-  if (req.hasOwnProperty('refreshToken')){
-    refreshToken = req.body.refreshToken;
-  }
+      refreshToken = req.body.refreshToken || null;
 
   this.protocols.oauth2(req, accessToken, refreshToken, profile, next);
 };

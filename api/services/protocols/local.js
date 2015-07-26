@@ -119,8 +119,7 @@ exports.connect = function (req, res, next) {
       }, function (err, passport) {
 
         req.response_headers = {};
-        if (passport.hasOwnProperty('accessToken') &&
-          !passport.hasOwnProperty('tokens')) {
+        if (passport.hasOwnProperty('accessToken')) {
           req.response_headers.accessToken = passport.accessToken;
         }
         next(err, user);
@@ -191,8 +190,7 @@ exports.login = function (req, identifier, password, next) {
           } else {
 
             req.response_headers = {};
-            if (passport.hasOwnProperty('accessToken') &&
-              !passport.hasOwnProperty('tokens')) {
+            if (passport.hasOwnProperty('accessToken')) {
               req.response_headers.accessToken = passport.accessToken;
             }
 

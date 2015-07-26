@@ -56,5 +56,4 @@ module.exports.routes = {
   'get /relevence': 'Report.subscribeToRelevence',
 
   'post /user/:id/addRelevence': 'User.addRelevence'
-
 };

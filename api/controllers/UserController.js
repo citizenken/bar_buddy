@@ -45,5 +45,5 @@ module.exports = {
       return res.json({
         todo: 'location() is not implemented yet!'
       });
-    }
+    },
 };
