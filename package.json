@@ -51,7 +51,7 @@
     "validator": "^3.39.0"
   },
   "scripts": {
-    "start": "sails lift",
+    "start": "node app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
