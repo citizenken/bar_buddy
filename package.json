@@ -12,6 +12,7 @@
     "ejs": "~0.8.4",
     "express-handlebars": "^2.0.1",
     "express-session": "^1.11.2",
+    "fs": "0.0.2",
     "googleapis": "^2.1.1",
     "grunt": "0.4.2",
     "grunt-bower": "^0.18.0",
@@ -23,6 +24,7 @@
     "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-jst": "~0.6.0",
     "grunt-contrib-less": "0.11.1",
+    "grunt-contrib-symlink": "^0.3.0",
     "grunt-contrib-uglify": "~0.4.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-sails-linker": "~0.9.5",
@@ -31,6 +33,7 @@
     "include-all": "~0.1.3",
     "jshint-stylish": "^2.0.1",
     "lodash": "^3.8.0",
+    "md5": "^2.0.0",
     "node-geocoder": "^2.20.2",
     "passport": "^0.2.1",
     "passport-google-oauth": "^0.2.0",
@@ -48,7 +51,7 @@
     "validator": "^3.39.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "sails lift",
     "debug": "node debug app.js"
   },
   "main": "app.js",

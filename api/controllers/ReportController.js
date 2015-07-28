@@ -94,6 +94,11 @@ module.exports = {
         var locationData = body.location,
             associations = {};
 
+        if (body.image) {
+          var imgData = body.image;
+          delete body.image;
+        }
+
         User.findOneById(body.reporter)
         .exec(function(err, reporter) {
           if (err) return res.json(500, {error: err});
@@ -112,12 +117,15 @@ module.exports = {
                   reportWithAssociations.reporter = associations.reporter;
                   reportWithAssociations.location = associations.location;
 
+                  if (imgData) {
+                    Report.saveImage(imgData, reportWithAssociations);
+                  }
+
                   Report.publishCreate(req, reportWithAssociations);
                   res.json(reportWithAssociations);
               });
           });
         });
-    }
-
+    },
 };
 

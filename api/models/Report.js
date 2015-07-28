@@ -5,6 +5,9 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+
+var fs = require('fs'),
+    md5 = require('md5');
 module.exports = {
 
   attributes: {
@@ -45,6 +48,23 @@ module.exports = {
 
     // Subscribe all watchers to the new instance, if you're into that
     this.introduce(report[this.primaryKey]);
+  },
+
+  saveImage: function (imageData ,report) {
+    var imageDir = sails.config.appPath + '/.tmp/public/report_images/',
+        timestamp = new Date().getTime(),
+        hash = md5(report.reporter + report.location.name + timestamp),
+        url = imageDir + hash + '.jpeg';
+
+    fs.writeFile(url, imageData, 'base64', function(err) {
+      console.log('this is an error', err);
+      report.image = url;
+      report.save(function(err, report) {
+        console.log(url);
+        if (err) return err;
+        return report;
+      });
+    });
   }
 
 };
