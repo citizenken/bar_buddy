@@ -94,10 +94,10 @@ module.exports = {
         var locationData = body.location,
             associations = {};
 
-        if (body.image) {
-          var imgData = body.image;
-          delete body.image;
-        }
+        // if (body.image) {
+        //   var imgData = body.image;
+        //   delete body.image;
+        // }
 
         User.findOneById(body.reporter)
         .exec(function(err, reporter) {
@@ -117,9 +117,9 @@ module.exports = {
                   reportWithAssociations.reporter = associations.reporter;
                   reportWithAssociations.location = associations.location;
 
-                  if (imgData) {
-                    Report.saveImage(imgData, reportWithAssociations);
-                  }
+                  // if (imgData) {
+                  //   Report.saveImage(imgData, reportWithAssociations);
+                  // }
 
                   Report.publishCreate(req, reportWithAssociations);
                   res.json(reportWithAssociations);

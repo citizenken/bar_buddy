@@ -14,7 +14,7 @@ module.exports = {
     reporter    : { model: 'user', required: true },
     location    : { model: 'location', required: true },
     content     : { type: 'text', required: true},
-    image       : { type: 'string'},
+    image       : { type: 'json'}, // Not actually JSON, but JSON uses LONGTEXT column property
     rating      : { type: 'boolean', required: true, defaultsTo: true},
     relevence   : { type: 'integer', defaultsTo: 0 },
     voted       : { collection: 'user', via: 'votedReviews' }
@@ -50,22 +50,22 @@ module.exports = {
     this.introduce(report[this.primaryKey]);
   },
 
-  saveImage: function (imageData ,report) {
-    var imageDir = sails.config.appPath + '/.tmp/public/report_images/',
-        timestamp = new Date().getTime(),
-        hash = md5(report.reporter + report.location.name + timestamp),
-        url = imageDir + hash + '.jpeg';
+  // saveImage: function (imageData ,report) {
+  //   var imageDir = sails.config.appPath + '/.tmp/public/report_images/',
+  //       timestamp = new Date().getTime(),
+  //       hash = md5(report.reporter + report.location.name + timestamp),
+  //       url = imageDir + hash + '.jpeg';
 
-    fs.writeFile(url, imageData, 'base64', function(err) {
-      console.log('this is an error', err);
-      report.image = url;
-      report.save(function(err, report) {
-        console.log(url);
-        if (err) return err;
-        return report;
-      });
-    });
-  }
+  //   fs.writeFile(url, imageData, 'base64', function(err) {
+  //     console.log('this is an error', err);
+  //     report.image = url;
+  //     report.save(function(err, report) {
+  //       console.log(url);
+  //       if (err) return err;
+  //       return report;
+  //     });
+  //   });
+  // }
 
 };
 
