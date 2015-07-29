@@ -54,8 +54,8 @@ main () {
 }
 
 check_variables () {
-    if [[ "${env}" == "production" ]]; then
-        read -p "Env is currently production. OK to update schema?(y/n):" UPDATE
+    if [[ "${env}" == "prod" ]]; then
+        read -p "Env is currently prod. OK to update schema?(y/n):" UPDATE
         if [[ "${UPDATE}" == "n" ]]; then
             exit
         fi
@@ -66,7 +66,7 @@ check_variables () {
 
 get_current_schema () {
     query="SELECT * FROM current_schema;"
-    if [[ "${NODE_ENV}" == "production" ]]; then
+    if [[ "${NODE_ENV}" == "prod" ]]; then
         mysql "${name}" --password="${password}" --host="${host}" --user="${user}" -e "${query}"
     else
     	mysql "${name}" -e "${query}"
@@ -76,7 +76,7 @@ get_current_schema () {
 
 create_schema () {
     mkdir -p schemas
-    if [[ "${NODE_ENV}" == "production" ]]; then
+    if [[ "${NODE_ENV}" == "prod" ]]; then
         mysql "${name}" --password="${password}" --host="${host}" --user="${user}" \
 	 > schemas/$(date +%s)_"${schema}".sql
     else
@@ -106,7 +106,7 @@ execute_update () {
     queries="CREATE TABLE IF NOT EXISTS current_schema (ID int NOT NULL, schema_name VARCHAR(50) NOT NULL, executed TIMESTAMP, PRIMARY KEY (ID));"
     queries+="REPLACE INTO current_schema (ID, schema_name) VALUES(1, '${schema_name}');"
 
-    if [[ "${NODE_ENV}" == "production" ]]; then
+    if [[ "${NODE_ENV}" == "prod" ]]; then
         mysql "${name}" --password="${password}" --host="${host}" --user="${user}" -e "${queries}"
         echo "Updating current schema table"
         mysql "${name}"  --password="${password}" --host="${host}" --user="${user}" < "${schema}"
