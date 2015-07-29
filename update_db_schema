@@ -2,6 +2,12 @@
 
 set -e
 
+if [[ "${@}" =~ "-d" ]]; then
+   set -x
+   
+fi 
+
+
 main () {
     schema="${1}"
     schema_dir="./schemas"
@@ -13,7 +19,7 @@ main () {
     user="${DB_USER}"
     port=":${DB_PORT}"
 
-    while getopts ":c:C" opt; do
+    while getopts ":c:Cd" opt; do
       case $opt in
         C)
           mode="current"
@@ -22,6 +28,9 @@ main () {
           mode="create"
           schema="${OPTARG}"
           ;;
+	d)
+	  :
+	  ;;
         *)
           echo "Invalid option: -$OPTARG" >&2
           exit
