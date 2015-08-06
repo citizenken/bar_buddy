@@ -41,20 +41,22 @@ module.exports.connections = {
   *                                                                          *
   ***************************************************************************/
   mysqlServerProd: {
-    adapter: 'sails-mysql',
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
+    adapter   : 'sails-mysql',
+    host      : process.env.DB_HOST,
+    user      : process.env.DB_USER,
+    password  : process.env.DB_PASS,
+    database  : process.env.DB_NAME,
+    port      : process.env.DB_PORT,
+    charset   : 'utf8',
   },
 
   mysqlServerDev: {
-    adapter: 'sails-mysql',
-    host: 'localhost',
-    user: 'root',
-    password: process.env.DB_PASS,
-    database: 'bar_buddy'
+    adapter   : 'sails-mysql',
+    host      : 'localhost',
+    user      : 'root',
+    password  : process.env.DB_PASS,
+    database  : 'bar_buddy',
+    charset   : 'utf8',
   },
 
 };
