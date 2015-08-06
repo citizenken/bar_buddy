@@ -13,7 +13,7 @@ module.exports = {
   attributes: {
     reporter    : { model: 'user', required: true },
     location    : { model: 'location', required: true },
-    content     : { type: 'text', required: true},
+    content     : { type: 'json', required: true},
     image       : { type: 'json'}, // Not actually JSON, but JSON uses LONGTEXT column property
     rating      : { type: 'boolean', required: true, defaultsTo: true},
     relevence   : { type: 'integer', defaultsTo: 0 },
