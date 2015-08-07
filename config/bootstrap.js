@@ -13,7 +13,16 @@ module.exports.bootstrap = function(cb) {
 
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  sails.hooks.http.app.set('trust proxy', true);
-  sails.services.passport.loadStrategies();
-  cb();
+
+  query = 'ALTER TABLE report ' +
+          'MODIFY content LONGTEXT ' +
+          'CHARACTER SET utf8mb4 ' +
+          'COLLATE UTF8MB4_UNICODE_CI NOT NULL;';
+
+  // Set emoji-friendly encoding for the report table after creation
+  sails.models.report.query(query, function(err, data) {
+    sails.hooks.http.app.set('trust proxy', true);
+    sails.services.passport.loadStrategies();
+    cb();
+  });
 };
