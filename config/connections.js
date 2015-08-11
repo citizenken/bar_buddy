@@ -47,7 +47,9 @@ module.exports.connections = {
     password  : process.env.DB_PASS,
     database  : process.env.DB_NAME,
     port      : process.env.DB_PORT,
-    charset   : 'utf8',
+    charset   : 'utf8mb4',
+    collation : 'utf8mb4_unicode_ci',
+    defaultTableCharset : 'utf8'
   },
 
   mysqlServerDev: {
@@ -56,7 +58,9 @@ module.exports.connections = {
     user      : 'root',
     password  : process.env.DB_PASS,
     database  : 'bar_buddy',
-    charset   : 'utf8',
+    charset   : 'utf8mb4',
+    collation : 'utf8mb4_unicode_ci',
+    defaultTableCharset : 'utf8'
   },
 
 };

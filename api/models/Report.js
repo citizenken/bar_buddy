@@ -9,7 +9,7 @@
 var fs = require('fs'),
     md5 = require('md5');
 module.exports = {
-
+  encoding: {charset: 'utf8mb4', collation: 'utf8mb4_unicode_ci'},
   attributes: {
     reporter    : { model: 'user', required: true },
     location    : { model: 'location', required: true },
