@@ -68,12 +68,13 @@ var AuthController = {
    * @param {Object} res
    */
   logout: function (req, res) {
-    req.logout();
-
-    // mark the user as logged out for auth purposes
-    req.session.authenticated = false;
-
-    res.json('200', {'status':'logged out'});
+    passport.invalidateTokens(req, res, function (error, user) {
+      if (error || !user) {
+        res.json('400', error);
+      } else {
+        res.send(user);
+      }
+    });
   },
 
   /**

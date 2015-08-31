@@ -205,3 +205,21 @@ exports.login = function (req, identifier, password, next) {
     });
   });
 };
+
+
+exports.resetToken = function (req, res, next) {
+  console.log('in reset token')
+  var oldToken = req.headers.authorization;
+
+  Passport.findOne({accessToken: oldToken}).exec(function (error, passport) {
+      console.log('rt results', error, passport)
+      if (error) next(error);
+      var newToken = crypto.randomBytes(48).toString('base64');
+      passport.accessToken = newToken;
+      passport.save(function (error, passport) {
+          console.log('rt update', error, passport);
+          if (error) next(error);
+          next(null, passport.user);
+      });
+  });
+};

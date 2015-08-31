@@ -1,7 +1,8 @@
 
-var path     = require('path')
-  , url      = require('url')
-  , passport = require('passport');
+var path     = require('path'),
+    url      = require('url'),
+    passport = require('passport'),
+    crypto    = require('crypto');
 
 /**
  * Passport Service
@@ -252,6 +253,9 @@ passport.callback = function (req, res, next) {
     else if (action === 'disconnect' && req.user) {
       this.protocols.local.disconnect(req, res, next);
     }
+    else if (action === 'logout') {
+      this.protocols.local.resetToken(req, res, next);
+    }
     else {
       next(new Error('Invalid action'));
     }
@@ -373,8 +377,8 @@ passport.loadStrategies = function () {
  * @param  {Object} res
  */
 passport.disconnect = function (req, res, next) {
-  var user     = req.user
-    , provider = req.param('provider');
+  var user     = req.user,
+      provider = req.param('provider');
 
   Passport.findOne({
       provider : provider,
@@ -390,6 +394,33 @@ passport.disconnect = function (req, res, next) {
         }
 
         next(null, user);
+      });
+  });
+};
+
+passport.invalidateTokens = function (req, res, next) {
+  var authHeader = req.headers.authorization.split(' '),
+      oldToken;
+
+  if (authHeader && authHeader[0] === 'Bearer') {
+    oldToken = authHeader[1];
+  }
+
+  Passport.findOne({accessToken: oldToken}).exec(function (error, passport) {
+      if (error) next(error);
+      console.log(error, passport)
+      passport.accessToken = null;
+      passport.tokens = null;
+
+
+      if (!passport.provider && passport.protocol === 'local') {
+        var newToken = crypto.randomBytes(48).toString('base64');
+        passport.accessToken = newToken;
+      }
+
+      passport.save(function (error, passport) {
+          if (error) next(error);
+          next(null, passport.user);
       });
   });
 };
