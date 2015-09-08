@@ -52,7 +52,7 @@
     "validator": "^3.39.0"
   },
   "scripts": {
-    "start": "./node_modules/pm2/bin/pm2 start app.js",
+    "start": "node app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
