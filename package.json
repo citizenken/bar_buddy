@@ -2,12 +2,14 @@
   "name": "bar_buddy",
   "private": true,
   "version": "0.0.0",
+  "engines": {
+    "node": "0.12.x"
+  },
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
     "backbone": "^1.2.0",
     "bcryptjs": "^2.1.0",
-    "bower": "^1.5.2",
     "connect-redis": "1.4.5",
     "db-migrate": "^0.9.15",
     "ejs": "~0.8.4",
