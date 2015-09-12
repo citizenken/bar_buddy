@@ -8817,7 +8817,7 @@
         },
         "waterline": {
           "version": "0.10.19",
-          "from": "https://registry.npmjs.org/waterline/-/waterline-0.10.19.tgz",
+          "from": "https://github.com/citizenken/waterline.git",
           "resolved": "https://registry.npmjs.org/waterline/-/waterline-0.10.19.tgz",
           "dependencies": {
             "bluebird": {
