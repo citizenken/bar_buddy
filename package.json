@@ -42,6 +42,7 @@
     "passport-google-oauth": "^0.2.0",
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
+    "pm2": "^0.14.7",
     "rc": "~0.5.0",
     "sails": "^0.11.0",
     "sails-disk": "~0.10.0",
@@ -54,7 +55,7 @@
     "validator": "^3.39.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "./node_modules/.bin/pm2 start app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
