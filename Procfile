@@ -1,1 +1,1 @@
-web: ./node_modules/.bin/pm2 start app.js
+web: node app.js
