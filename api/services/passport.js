@@ -402,13 +402,15 @@ passport.invalidateTokens = function (req, res, next) {
   var authHeader = req.headers.authorization.split(' '),
       oldToken;
 
+  console.log(authHeader);
+
   if (authHeader && authHeader[0] === 'Bearer') {
     oldToken = authHeader[1];
   }
 
   Passport.findOne({accessToken: oldToken}).exec(function (error, passport) {
       if (error) next(error);
-      console.log(error, passport)
+      console.log(error, passport);
       passport.accessToken = null;
       passport.tokens = null;
 
