@@ -30,21 +30,28 @@ module.exports = {
         id: report[this.primaryKey]
     });
 
-    var reportId = report.reporter.id;
-    room = Reporter.room(reportId, 'newReporterReport');
-    sails.sockets.broadcast(room, 'newReporterReport', {
+    var room = 'bargazer_bar_' + report.location.placeId;
+    sails.sockets.broadcast(room, 'newNearbyReport', {
         verb: 'created',
         data: report,
         id: report[this.primaryKey]
     });
 
-    reportId = report.location.id;
-    room = Reporter.room(reportId, 'newLocationReport');
-    sails.sockets.broadcast(room, 'newLocationReport', {
-        verb: 'created',
-        data: report,
-        id: report[this.primaryKey]
-    });
+    // var reportId = report.reporter.id;
+    // room = Reporter.room(reportId, 'newReporterReport');
+    // sails.sockets.broadcast(room, 'newReporterReport', {
+    //     verb: 'created',
+    //     data: report,
+    //     id: report[this.primaryKey]
+    // });
+
+    // reportId = report.location.id;
+    // room = Reporter.room(reportId, 'newLocationReport');
+    // sails.sockets.broadcast(room, 'newLocationReport', {
+    //     verb: 'created',
+    //     data: report,
+    //     id: report[this.primaryKey]
+    // });
 
     // Subscribe all watchers to the new instance, if you're into that
     this.introduce(report[this.primaryKey]);

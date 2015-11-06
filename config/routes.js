@@ -55,5 +55,6 @@ module.exports.routes = {
   'post /report/:id/relevence': 'Report.relevence',
   'get /relevence': 'Report.subscribeToRelevence',
 
-  'post /user/:id/addRelevence': 'User.addRelevence'
+  'post /user/:id/addRelevence': 'User.addRelevence',
+  'post /updatePosition': 'Places.updateUserPosition'
 };
